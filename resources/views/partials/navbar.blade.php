@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url('/') }}">JOB-SEEKER</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav"
+      aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{{ url('/about') }}" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="{{ url('/blog') }}" class="nav-link">Blog</a></li>
+        <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link">Contact</a></li>
+        @if(auth()->check())
+        {{ auth()->user()->email }}
+        <li class="nav-item dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">View Profile</a>
+            <a class="dropdown-item" href="#">Update</a>
+            <a class="dropdown-item" href="#">Applications</a>
+            <a class="dropdown-item" href="#">Logout</a>
+          </div>
+          </li>
+          @else
+          <li class="nav-item">        <a href="{{route('login-form')}}"  class="nav-link">Login</a>  </li>
+  
+          @endif
+       
+      </ul>
+    </div>
+  </div>
+</nav>
