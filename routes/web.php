@@ -9,6 +9,7 @@ use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\VerificationController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
@@ -37,16 +38,15 @@ Route::post('/jobs/search', [JobController::class, 'search'])->name('jobs.search
 
 
 //email
+// Email verification
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill(); // Marks the user as verified
-    return redirect('/home'); // Or wherever you want to redirect after verification
-})->middleware(['auth', 'signed'])->name('verification.verify');
+// Resend verification email
+Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
+
+// Default Auth routes with email verification support
 Auth::routes(['verify' => true]);
-
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
