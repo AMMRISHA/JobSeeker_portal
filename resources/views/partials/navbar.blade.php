@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-white bg-white">
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">JOB-SEEKER</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav"

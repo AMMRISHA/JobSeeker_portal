@@ -4,7 +4,7 @@
 
 <div class="main">
     <div class="box">
-      <h3>Login</h3><br><br><br>
+      <h3 class="text-white">Login</h3><br><br><br>
       <form action="{{ route('login') }}" method="post" name="login" id="login" onsubmit="return validateForm(event)">
         @csrf
 

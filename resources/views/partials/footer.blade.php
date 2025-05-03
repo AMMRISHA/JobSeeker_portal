@@ -1,15 +1,17 @@
-<footer class="footer bg-dark section">
+<footer class="footer bg-dark section p-5">
   <div class="container">
     <div class="row mb-5">
       <div class="col-md">
         <div class="footer-widget mb-4">
           <h2 class="heading-2 text-white">About</h2>
           <p class="text-white">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-          <img src="{{ asset('images/footer-image.jpg') }}" alt="Footer Image" class="img-fluid mb-3">
-          <ul class="footer-social list-unstyled float-md-left float-lft mt-3">
-            <li class="animate"><a href="#"><span class="icon-twitter"></span></a></li>
-            <li class="animate"><a href="#"><span class="icon-facebook"></span></a></li>
-            <li class="animate"><a href="#"><span class="icon-instagram"></span></a></li>
+           <ul class="footer-social list-unstyled float-md-left float-lft mt-3 d-flex">
+            <li class="animate"><a href="#"><img src="{{ asset('images/facebook-app-symbol.png') }}" alt="Footer Image" class="img-fluid mb-3">
+            </a></li>
+            <li class="animate"><a href="#"><img src="{{ asset('images/instagram.png') }}" alt="Footer Image" class="img-fluid mb-3">
+            </a></li>
+            <li class="animate"><a href="#"><img src="{{ asset('images/twitter.png') }}" alt="Footer Image" class="img-fluid mb-3">
+            </a></li>
           </ul>
         </div>
       </div>
@@ -44,9 +46,9 @@
           <h2 class="heading-2 text-white">Have a Questions?</h2>
           <div class="block-23 mb-3">
             <ul>
-              <li><span class="icon icon-map-marker"></span><span class="text-white">Kalyani, Nadia, West Bengal</span></li>
-              <li><a href="#" class="text-white"><span class="icon icon-phone"></span><span class="text">8967689621089</span></a></li>
-              <li><a href="#" class="text-white"><span class="icon icon-envelope"></span><span class="text">ammrisha@gmail.com</span></a></li>
+              <li class="text-white">Kalyani, Nadia, West Bengal</li>
+              <li class="text-white">8967689621089</a></li>
+              
             </ul>
           </div>
         </div>

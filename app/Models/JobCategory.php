@@ -8,11 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class JobCategory extends Model
 {
     use HasFactory;
+    protected $table = 'job_category';  
 
-    // Specify the table name (if it does not follow Laravel's naming convention)
-    protected $table = 'job_categories';  // Replace with your table name
-
-    // Define the primary key for the table
     protected $primaryKey = 'job_category_id';
 
     // If the table does not use the default timestamps (created_at, updated_at), set this to false

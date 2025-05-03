@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Job extends Model
+class JobDetails extends Model
 {
     use HasFactory;
 
@@ -35,7 +35,7 @@ class Job extends Model
     public $incrementing = true;
 
     // Optionally, if the 'job_id' is not an integer, you can define its type
-    protected $keyType = 'bigint';
+    protected $keyType = 'int';
 
     // Optionally, if you want to manage timestamps manually, set these properties
     // public $timestamps = false;  // If not using Laravel's created_at and updated_at columns
