@@ -3,117 +3,20 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="hero-wrap js-fullheight" style="background-image: linear-gradient(90deg, rgba(2, 0, 36, 0.4) 0%, rgba(9, 9, 121, 0.4) 35%, rgba(0, 212, 255, 0.4) 100%), url('images/newbg2.jpg'); height: 600px; " data-stellar-background-ratio="0.5">
   <div class="container h-100 d-flex align-items-center justify-content-center">
     <div class="text-white w-100">
         
-      <h1 class="mb-4" style="color:white"><span> Your Dream</span> <br> Job is waiting for</h1>
+      <h1 class="mb-4" style="color:white"><span>About Us</h1>
       <div class="col-md-12 nav-link-wrap">
-                <div class="nav nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  <a class="nav-link active mr-md-1" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">Find a Job</a>
-
-                  <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">anytime</a>
-
-                </div>
+               
               </div>
-              <form action="{{ route('job.search') }}" method="post" class="search-job">
-              @csrf 
-              <div class="row justify-content-center py-3" style="background-color:white;">
-
-            
-
-                    <div class="col-md-12 tab-wrap">
-
-                      <div class="tab-content p-4" id="v-pills-tabContent">
-
-                        <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-nextgen-tab">
-                          
-                          <div class="row">
-      
-                              <div class="col-md">
-                                <div class="form-group">
-                                  <div class="form-field">
-                                    <div class="icon"><span class="icon-briefcase"></span></div>
-                                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="eg. Garphic. Web Developer">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-md">
-                                <div class="form-group">
-                                  <div class="form-field">
-                                    <div class="select-wrap">
-                                      <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                      <select name="category" id="category" class="form-control">
-                                          @foreach($job_category as $category)
-                                          
-                                              <option value="{{$category->job_category_id}}">{{$category->job_category}}</option>
-                                          @endforeach
-                                        
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="col-md">
-                                <div class="form-group">
-                                  <div class="form-field">
-                                    <button type="submit" name="search" id="search" class="form-control btn btn-primary">Search</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          
-                        </div>
-
-                      
-                      </div>
-                    </div>
-              
-              
-                
-              </div>
-            </form>
+          
 
     </div>
   </div>
 </div>
-
-<div id="liveSearchResults" class="list-group position-absolute w-100" style="z-index: 1000;"></div>
-
-
-<div class="row align-items-center justify-content-center my-5 p-10 bg-light">
-  <div class="col-md-12 text-center p-md-4">
-    <h2 class="mb-4"><span>Recent</span> Jobs</h2>
-
-    <div class="row"> <!-- Job cards row -->
-
-      
-    @forelse($job_details as $jobs)
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">{{ $jobs->title }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ get_category_name_by_id($jobs->job_id) }}</h6>
-              <p class="card-text">{{ Str::limit($jobs->description, 100) ?? 'No description available' }}</p>
-              <p>
-                <strong>{{ get_country_name($jobs->country) }}</strong>,
-                <strong>{{ get_city_name($jobs->city) }}</strong>
-              </p>
-            </div>
-           
-          </div>
-        </div>
-        @empty
-          <p class="text-center">No recent jobs found.</p>
-        @endforelse
-        
-
-    </div>
-
-  </div>
-</div>
-
 
       <div class="container p-md-4">
                   <div class="row my-5 text-left" >
@@ -269,36 +172,6 @@
       </div>
     </div>
   </section>
-  
 @endsection
 
 
-@push('scripts')
-
-
-<script>
-$('#keyword').on('keyup', function() {
-    let keyword = $(this).val();
-    let category = $('#category').val(); // Category dropdown/input
-
-    if (keyword.length >= 2 || category) {  // You can adjust the length condition
-        $.ajax({
-            url: '{{ route("job.livesearch") }}',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                keyword: keyword,
-                category: category
-            },
-            success: function(response) {
-                $('#liveSearchResults').html(response.html).fadeIn();
-            }
-        });
-    } else {
-        $('#liveSearchResults').fadeOut();
-    }
-});
-
-</script>
-
-@endpush

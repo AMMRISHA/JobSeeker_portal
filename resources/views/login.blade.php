@@ -18,6 +18,7 @@
             </div>
         @endif
 
+        
         <input type="email" name="email" id="email" placeholder="Email" value="{{ old('email') }}">
         <input type="password" name="password" id="password" placeholder="Password"><br>
 

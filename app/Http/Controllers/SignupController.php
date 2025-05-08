@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Notifications\CustomEmailVerification; 
+use Illuminate\Bus\Queueable;
+use App\Models\Applicant;
 
 
 class SignupController extends Controller
@@ -38,7 +40,9 @@ class SignupController extends Controller
     
             // Handle the user's birthday if provided
             $birthday = $request->birthday ? Carbon::createFromFormat('d-m-Y', $request->birthday)->format('Y-m-d') : NULL;
-    
+            $code = rand(0, 99999);
+
+            // dd($code);
             // Create a new user
             $user = User::create([
                 'name' => $request->Firstname . ' ' . $request->Lastname,
@@ -46,22 +50,52 @@ class SignupController extends Controller
                 'password' => Hash::make($request->password),
                 'mobile' => $request->mobile,
                 'birthday' => $birthday,
-                'is_applicant' => $request->is_applicant
+                'is_applicant' => $request->is_applicant ,
+                'verification_code'=> $code
             ]);
-    
-            // dd('created');
+            
+         
             try {
+                // dd($user);
                 // Send the custom email verification notification
-                $user->notify(new CustomEmailVerification());  // Use the custom notification
-                dd("mail sent");
+                $user->notify(new CustomEmailVerification($code));  // Use the custom notification
+       
             } catch (\Exception $e) {
-                dd("mail not sent");
-                Log::error('Email verification failed for user: ' . $user->email . ' Error: ' . $e->getMessage());
+                dd($e->getMessage());   
             }
-    
-            return redirect()->route('index')->with('success', 'Registration successful! Please check your email for verification.');
+            // dd('created');
+            return redirect()->route('verify',['email'=>$user->email])->with('success', 'Registration successful! Please check your email for verification.');
         }
     
+        public function verify($email){
+            $user = User::where('email', $email)->firstOrFail();
+            return view('auth.verify-view',[
+                'user'=>$user
+            ]);
+        } 
+
+        public function verified(Request $request){
+
+            $user = User::where('email', $request->email)->firstOrFail();
+            // dd($request->verification_code);
+            if($user){
+                // dd("find");
+                if($user->verification_code == $request->verification_code){
+                    $user->is_verified = 1;
+                    $user->email_verified_at = now();
+                    // dd($user->is_verified);
+                    $user->save();
+                    return redirect()->route('login-form');
+                }else{
+                    $user->is_verified=0;
+                    return  view('auth.verify-view',[
+                        'user'=>$user
+                    ]);
+                }
+               
+            }
+           
+        }
    
 }
 

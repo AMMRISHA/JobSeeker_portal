@@ -1,21 +1,36 @@
 <?php
 
 namespace App\Notifications;
-
-use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Notification;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
-
-class CustomEmailVerification extends VerifyEmail
+class CustomEmailVerification extends Notification
 {
+
+    use Queueable;
+
+    protected $code;
+
+    public function __construct($code)
+    {
+        $this->code = $code;
+    }
+
+    public function via($notifiable)
+    {
+        return ['mail'];
+    }
+
     public function toMail($notifiable)
     {
-        $verificationUrl = $this->verificationUrl($notifiable); // this is the key part!
-
+      
         return (new MailMessage)
-            ->subject('Please verify your email address')
+            ->subject('Your Verification Code')
             ->greeting('Hello ' . $notifiable->name)
-            ->line('Please click the button below to verify your email address.')
-            ->action('Verify Email', $verificationUrl)
-            ->line('Thank you for using our application!');
+            ->line('Your verification code is:')
+            ->line("**{$this->code}**")  // bold formatting
+            ->line('Please enter this code to verify your email.')
+            ->salutation('Regards, ' . config('app.name'));
+
     }
 }
