@@ -83,8 +83,8 @@
 
 
 <div class="row align-items-center justify-content-center my-5 p-10 bg-light">
-  <div class="col-md-12 text-center p-md-4">
-    <h2 class="mb-4"><span>Recent</span> Jobs</h2>
+  <div class="col-md-12  p-md-4">
+    <h2 class="mb-4 text-center"><span>Recent</span> Jobs</h2>
 
     <div class="row"> <!-- Job cards row -->
 
@@ -98,7 +98,8 @@
               <p class="card-text">{{ Str::limit($jobs->description, 100) ?? 'No description available' }}</p>
               <p>
                 <strong>{{ get_country_name($jobs->country) }}</strong>,
-                <strong>{{ get_city_name($jobs->city) }}</strong>
+                <strong>{{ get_city_name($jobs->city) }}</strong> <br>
+              <a href="{{route('job', ['job_id' => $jobs->job_id])}}"><button class=" my-4 btn btn-primary">Apply</button></a> 
               </p>
             </div>
            

@@ -10,7 +10,7 @@
 <i class="fas fa-edit text-sub " style="color:white !important;"></i>   Edit Profile
 </a>
 </div>
-<div class="bg-soft-primary my-5">
+<div class="bg-soft-primary my-5" style="border:none;">
     <div class="container-fluid">
         <div class="row mx-auto">
             <div class="col-md-6">
@@ -95,6 +95,20 @@
                                             Citizenship
                                             <br>
                                             <strong>{{$user_details && ($user_details->country) ? get_country_name($user_details->country) : '--'}}</strong> 
+                                         
+                                    </div><!--col-->
+                                    <div class="col-md-4">
+                                        <br>
+                                            State
+                                            <br>
+                                            <strong>{{$user_details && ($user_details->state) ? get_state_name($user_details->state) : '--'}}</strong> 
+                                         
+                                    </div><!--col-->
+                                    <div class="col-md-4">
+                                        <br>
+                                            City
+                                            <br>
+                                            <strong>{{$user_details && ($user_details->city) ? get_city_name($user_details->city) : '--'}}</strong> 
                                          
                                     </div><!--col-->
                                     <br>

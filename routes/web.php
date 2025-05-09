@@ -37,6 +37,21 @@ Route::post('search' ,[HomeController::class , 'search'])->name('job.search');
 
 Route::get('editprofile' ,[ApplicantController::class , 'editprofile'])->name('abasic.info.edit');
 Route::post('updatebasicinfo',[ApplicantController::class , 'save'])->name('update.basic.info');
+Route::get('job/{job_id}',[ApplicantController::class , 'jobForApply'])->name('job');
+
+Route::get('apply/{job_id}',[ApplicantController::class , 'apply'])->name('apply');
+Route::post('applicaion_save',[ApplicantController::class , 'applicationSave'])->name('application.save');
+
+Route::post('/file-upload/{id}/{document_column_name}', [ApplicantController::class, 'ApplicantFileUpload'])->name('file-upload');
+ Route::get('/download/{filename}', [ApplicantController::class, 'downloadFile'])
+       ->where('filename', '.*')
+       ->name('file.download');
+
+
+
+Route::delete('/delete-all-doc/{id}/{filename}', [ApplicantController::class, 'deleteAlldocument'])->name('delete-all-doc');
+
+
 //wishlist
 
 // Route::post('/wishlist/add/{job}', [HomeController::class, 'addwishlist'])->name('wishlist.add');

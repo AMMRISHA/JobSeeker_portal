@@ -4,7 +4,7 @@
 @section('content')
 <div class="col-sm-12 col-md-9" style="margin-left: 11px;">
   
-    <h4 class="card-title" style="padding: 0px 0px 10px !important;">Update Your Profile</h4>
+    <h4 class="card-title text-center" style="padding: 0px 0px 10px !important;">Apply</h4>
     
     
    
@@ -42,11 +42,12 @@
                     <div role="my-5 card-body">
                             
                                
-                           <form action="{{route('update.basic.info')}}" method ="post" enctype="multipart/form-data">
+                           <form action="{{route('application.save')}}" method ="post" enctype="multipart/form-data">
 
                             @csrf
 
                             <input type="hidden" name ="id" value="{{$logged_in_user->id}}" >
+                            <input type="hidden" name="job_id" value="{{$job_details->job_id}}">
                             <div class="row  mt-4 mb-4">
                                 <div class="col-sm-12 col-md-9"  style="margin:auto; display:flex;justify-content: space-between; width:98% !important">
 
@@ -57,10 +58,10 @@
                                          
                                                     <div class="col-sm-12 col-md-4">
                                                                 <br>
-                                                                @if($user_details && $user_details->photo)
-                                                                    <img src="{{ asset('storage/' . $user_details->photo) }}" width="100" height="100" alt="User Photo" style="border-radius: 50%;" />
+                                                                @if($applicant_details && $applicant_details->photo)
+                                                                    <img src="{{ asset('storage/' . $applicant_details->photo) }}" width="100" height="100" alt="User Photo" style="border-radius: 50%;" />
                                                                 @else
-                                                                    @if($user_details->gender == 'female')
+                                                                    @if($applicant_details->gender == 'female')
                                                                         <img src="{{ asset('assets/images/users/girl.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="Default Girl" />
                                                                     @else
                                                                         <img src="{{ asset('assets/images/users/boy.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="Default Boy" />
@@ -107,7 +108,7 @@
                                         <label class="col-form-label" >Father/Spouse Name</label>
                                         <input type="text" class="form-control input-box-inner-style "
                                             name="father_name" placeholder="Father/Spouse Name"
-                                            value="{{$user_details->father_name}}"
+                                            value="{{$applicant_details->father_name}}"
                                             maxlength="50">
                                     </div>
 
@@ -117,7 +118,7 @@
                                         <label >Mother's Name</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="mother_name" placeholder="Mother's Name" 
-                                             value="{{$user_details->mother_name}}"
+                                             value="{{$applicant_details->mother_name}}"
                                             maxlength="50" value="">
                                     </div>
                                 </div>
@@ -126,7 +127,7 @@
                                         <label >Aadhar No.</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="aadhar_no" placeholder="Aandhar No." 
-                                             value="{{$user_details->aadhar_no}}">
+                                             value="{{$applicant_details->aadhar_no}}">
                                     </div>
                                 </div>     
 
@@ -153,7 +154,7 @@
                                                 <input type="radio" class="radio-col-blue form-check-input"
                                                     name="gender" id="male" value="male"
                                                     @if(Request::old('gender') == "male") checked
-                                                    @elseif(!empty($user_details) && $user_details->gender == "male") checked @endif>
+                                                    @elseif(!empty($applicant_details) && $applicant_details->gender == "male") checked @endif>
 
                                                 <label class=" form-check-label" for="male">Male</label>
 
@@ -165,7 +166,7 @@
                                                 <input type="radio" class="radio-col-blue form-check-input"
                                                     name="gender" id="female" value="female"
                                                     @if(Request::old('gender') == "female") checked
-                                                    @elseif(!empty($user_details) && $user_details->gender == "female") checked @endif>
+                                                    @elseif(!empty($applicant_details) && $applicant_details->gender == "female") checked @endif>
                                                 <label class=" form-check-label" for="female">Female</label>
                                             </div>
                                         </div>
@@ -186,7 +187,7 @@
                                                 <input type="radio" class="radio-col-blue form-check-input"
                                                     name="marital_status" id="single" value="single"
                                                     @if(Request::old('marital_status') == "single") checked
-        @elseif(!empty($user_details) && $user_details->marital_status == "single") checked @endif >
+        @elseif(!empty($applicant_details) && $applicant_details->marital_status == "single") checked @endif >
                                                 <label class=" form-check-label" for="single">Single</label>
                                                 <div class="invalid-feedback">
                                                     &nbsp;Please choose a marital status.
@@ -196,7 +197,7 @@
                                                 <input type="radio" class="radio-col-blue form-check-input"
                                                     name="marital_status" id="married" value="married"
                                                     @if(Request::old('marital_status') == "married") checked
-        @elseif(!empty($user_details) && $user_details->marital_status == "married") checked @endif>
+        @elseif(!empty($applicant_details) && $applicant_details->marital_status == "married") checked @endif>
                                                 <label class=" form-check-label" for="married">Married</label>
                                             </div>
                                         </div>
@@ -224,12 +225,12 @@
                                             <label >Country</label>
                                             <select class="form-control form-select shadow-none text-dark input-box-inner-style border"
                                                     id="country-dd" name="country" >
-                                                <option value="{{ $user_details->country }}">
-                                                    {{ $user_details->country ? get_country_name($user_details->country) : 'Select Country' }}
+                                                <option value="{{ $applicant_details->country }}">
+                                                    {{ $applicant_details->country ? get_country_name($applicant_details->country) : 'Select Country' }}
                                                 </option>
                                                 @foreach ($country_details as $country)
                                                     <option value="{{ $country->id }}"
-                                                        @if (Request::old('country') == $country->id || $country->id == $user_details->country) 
+                                                        @if (Request::old('country') == $country->id || $country->id == $applicant_details->country) 
                                                             selected 
                                                         @endif>
                                                         {{ $country->title_en }}
@@ -241,17 +242,17 @@
                                         <div class="col-md-4">
                                             <label >State</label>
                                             <select class="form-control form-select shadow-none text-dark input-box-inner-style border"
-                                                    name="state" id="state-dd" value="$user_details->state" data-user-id="{{$user_details->state}}" > 
-                                                    @if ($user_details->state)
-                                                        <option value="{{ $user_details->state }}" selected>
-                                                            {{ get_state_name($user_details->state) }}
+                                                    name="state" id="state-dd" value="$applicant_details->state" data-user-id="{{$applicant_details->state}}" > 
+                                                    @if ($applicant_details->state)
+                                                        <option value="{{ $applicant_details->state }}" selected>
+                                                            {{ get_state_name($applicant_details->state) }}
                                                         </option>
                                                     @else
                                                         <option value="">Select State</option>
                                                     @endif
                                                     @foreach ($state_details as $state)
                                                         <option value="{{ $state->id }}"
-                                                            @if (Request::old('state') == $state->id || $state->id == $user_details->state) 
+                                                            @if (Request::old('state') == $state->id || $state->id == $applicant_details->state) 
                                                                 selected 
                                                             @endif>
                                                             {{ $state->name }}
@@ -292,8 +293,8 @@
     
                                         <textarea  class="form-control input-box-inner-style "
                                             name="about" placeholder="About/Expertise"
-                                            value="{{$user_details->about}}"
-                                            maxlength="500">{{ $user_details->about }}</textarea>
+                                            value="{{$applicant_details->about}}"
+                                            maxlength="500">{{$applicant_details->about }}</textarea>
 
                                             </div><!--col-->
     
@@ -308,6 +309,45 @@
                                      </button>   
                                     </form>
 
+                 <h3 class="text-start mt-4"> Documents</h3>
+                                    <div class="row">
+                                         <div class="col-md-4" style="margin-top:10px !important;">
+                                    <div class=" form-container">
+                                        <div class="form-group">
+                                        <form action="{{ route('file-upload', ['id'=>$applicant_details->applicant_id,'document_column_name'=>'resume'] ) }}" method="POST" enctype="multipart/form-data">
+
+                                                @csrf
+                                                <label for="offerLetter">Resume</label>
+                                                <input type="file" name="resume" class="form-control" accept="image/*,.pdf" >
+                                                <!-- Placeholder Display -->
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                                </form>
+
+                                                @if(!empty($applicant_details->resume))
+                                                <div class="file-box" style="margin-top:5px !important;">
+                                                    <strong style="font-size:14px;">
+                                                    {{$applicant_details->resume}}
+                                                       
+                                                    </strong>
+                                                    <a href="{{ route('file.download', basename($applicant_details->resume)) }}" style="margin-left: 10px;"  >
+                                                                            <i class="fa fa-download"></i>
+                                                    </a>
+                                                    <!-- Delete Button -->
+                                                    <form action="{{ route('delete-all-doc', ['id' => $applicant_details->applicant_id, 'resume']) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this document?');" class="doc-delete-btn">
+                                                                                            <i class="fas fa-trash"></i> 
+                                                                                        </button>
+                                                    
+                                                    </form>
+                                                </div>
+                                                @endif
+
+                                       
+                                    </div>
+                                </div>
+                                    </div>
 
       
                                             </div><!--tab panel-->
