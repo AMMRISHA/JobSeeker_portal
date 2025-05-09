@@ -2,9 +2,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-sm-12 col-md-9" style="margin-left: 11px;">
+<div class="col-sm-12 col-md-9 p-5" style="margin-left: 11px;">
   
-    <h4 class="card-title" style="padding: 0px 0px 10px !important;">Update Your Profile</h4>
+    <h4 class="card-title text-center" style="padding: 0px 0px 10px !important;">Update Your Profile</h4>
     
     
    
@@ -19,7 +19,7 @@
     <!-- Start Page Content -->
     <!-- ============================================================== -->
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-8 mx-auto">
             <div class="card">
                 <div class="card-body">                
                                      
@@ -39,7 +39,7 @@
                         </button>
                      
                     </div>
-                    <div role="my-5 card-body">
+                    <div class="my-5 card-body">
                             
                                
                            <form action="{{route('update.basic.info')}}" method ="post" enctype="multipart/form-data">
@@ -301,11 +301,20 @@
                                     </div>   <!-- form-group --> 
                                
                                     <!-- identity Information starts -->
-               
-                                     <button class="btn btn-primary">
-                                        Save
-                                        
-                                     </button>   
+                                    
+
+
+
+                                    <div class="row" style="margin-top:20px;">
+                                        <div class="col-sm-12 col-md-8" style="margin:auto;justify-content: center; align-items:center;display: flex
+        ;">
+                                            <div class="form-group mb-0 mt-2 clearfix text-center">
+                                                <button type="submit" class="btn btn-primary btn-lg" style="margin-bottom:20px !important;">Update</button>
+                                            </div><!--form-group-->
+                                        </div><!--col-->
+                                
+                                    </div>
+                                  
                                     </form>
 
 

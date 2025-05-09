@@ -16,8 +16,7 @@ use App\Models\User;
 use App\Models\Applicant;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
-
+use App\Notifications\ApplicationSubmittedNotification;
 use Carbon\Carbon;
 
 
@@ -133,10 +132,11 @@ class ApplicantController extends Controller
         }
 
         public function applicationSave(Request $request){
-            
+     
             $user_details = User::where('id' , $request->id)->first();
             $application = Applicant::where('user_id', $request->id)->first();
-            
+            $job_details = JobDetails::where('job_id' , $request->job_id)->first();
+        
             $request->validate([
                 'birthday' => 'nullable|date_format:d-m-Y',
                 'address' => 'nullable|string|max:255',
@@ -200,6 +200,12 @@ class ApplicantController extends Controller
                     $existing->photo = $path;
                     $existing->save();
 
+                }
+
+                try {
+                    $user_details->notify(new ApplicationSubmittedNotification($request->job_id , $job_details->title));
+                } catch (\Exception $e) {
+                    \Log::error('Email sending failed: ' . $e->getMessage());
                 }
 
                 return view('application_submitted');

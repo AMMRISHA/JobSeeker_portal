@@ -82,7 +82,7 @@
 <div id="liveSearchResults" class="list-group position-absolute w-100" style="z-index: 1000;"></div>
 
 
-<div class="row align-items-center justify-content-center my-5 p-10 bg-light">
+<div class="row align-items-center justify-content-center my-5 p-10">
   <div class="col-md-12  p-md-4">
     <h2 class="mb-4 text-center"><span>Recent</span> Jobs</h2>
 

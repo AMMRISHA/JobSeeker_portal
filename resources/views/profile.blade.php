@@ -16,16 +16,16 @@
             <div class="col-md-6">
 
             </div>
-            <div class="col-12">
+            <div class="col-8 mx-auto">
                 <div class="card">
                     <div class="card-body">
                       
-                        <div class="row mt-4 mb-4" style=" justify-content: space-between;    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1); background: white; padding: 20px 10px;border-radius: 20px">
+                        <div class="row mt-4 mb-4" style=" justify-content: space-between; background: white; padding: 20px 10px;border-radius: 20px">
                             <div class="col-12" style="margin: auto;
                                 justify-content: center;
                                 align-items: center;
-                                display: flex
-                            ;
+                                display: flex;
+                            margin-bottom:1px solid ;
                                 flex-direction: column;">
                                     <div class="mx-auto">
                                             @if( $user_details  && $user_details->photo != '')
@@ -41,8 +41,9 @@
                                         {{ $logged_in_user->name }}
                                     </h4>
                                      
-
+  
                             </div>
+                          
 
                         <div class="col-md-4">
                             <br>

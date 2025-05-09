@@ -9,10 +9,10 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12   ">
-                    <h3 class="text-start mt-4">Applied Jobs</h3>
+                  <h3 class="text-start mt-4">Applied Jobs</h3>
                   
                     <div class="mt-4">
-                        <table class="table  dataTable no-footer">
+                        <table class="table  dataTable no-footer" >
                             <thead>
                                 <tr>
                                     <th scope="col">Job Id</th>

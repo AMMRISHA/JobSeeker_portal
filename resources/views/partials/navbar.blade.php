@@ -18,11 +18,14 @@
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ auth()->user()->email }}
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="{{route('profile')}}">View Profile</a>
-            <a class="dropdown-item" href="{{ route('abasic.info.edit') }}">Update</a>
-            <a class="dropdown-item" href="{{route('show.all.applied.jobs')}}">Applications</a>
-            <form action="{{route('logout')}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="overflow: hidden; margin:auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;">
+            <a class="dropdown-item d-flex align-items-center" href="{{route('profile')}}" style="gap:10px;"><i class="fa-solid fa-eye"></i> <span>View Profile</span> </a>
+            <a class="dropdown-item d-flex align-items-center" href="{{ route('abasic.info.edit') }}" style="gap:10px;"><i class="fa-solid fa-pen-to-square"></i><span> Update</span></a>
+            <a class="dropdown-item d-flex align-items-center" href="{{route('show.all.applied.jobs')}}" style="gap:10px;"><i class="fa-solid fa-cloud-arrow-up"></i><span>Applications</span> </a>
+            <form class="dropdown-item d-flex align-items-center justify-content-center" action="{{route('logout')}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
                 @csrf
             
                 <button type="submit" class="btn btn-outline-danger">
