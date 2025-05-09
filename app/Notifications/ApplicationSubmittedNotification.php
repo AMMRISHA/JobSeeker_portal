@@ -39,7 +39,7 @@ class ApplicationSubmittedNotification extends Notification
         return (new MailMessage)
             ->subject('Application Submitted Successfully')
             ->greeting('Hello ' . $notifiable->name)
-            ->line('Your application for the position of .' . $this->title .' (Job ID: ' . $this->jobId . ' )has been submitted.')
+            ->line('Your application for the position of .' . $this->title .' (Job ID: ' . $this->jobId . ' )has been submitted successfully.')
             ->line('Thank you for applying!')
             ->salutation('Regards, HR Team');
     }

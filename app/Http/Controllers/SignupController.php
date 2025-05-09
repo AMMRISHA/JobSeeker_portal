@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Log;
 use App\Notifications\CustomEmailVerification; 
 use Illuminate\Bus\Queueable;
 use App\Models\Applicant;
+use App\Models\JobCategory;
+
 
 
 class SignupController extends Controller
@@ -27,6 +29,8 @@ class SignupController extends Controller
     public function submitSignupForm(Request $request)
     {
         // dd($request);
+
+        $user_type = DB::table('user_type')->where('user_type_id' , $request->is_applicant)->first();
    
             $request->validate([
                 'Firstname' => 'nullable|string',
@@ -44,16 +48,34 @@ class SignupController extends Controller
 
             // dd($code);
             // Create a new user
+
+          
             $user = User::create([
                 'name' => $request->Firstname . ' ' . $request->Lastname,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'mobile' => $request->mobile,
                 'birthday' => $birthday,
-                'is_applicant' => $request->is_applicant ,
                 'verification_code'=> $code
             ]);
-            
+
+
+            //set applicant type
+
+              if($user_type && $user_type->user_type == 'HR')
+                {
+                    $user->is_company_hr = 1; 
+                }
+                else if($user_type && $user_type->user_type == 'Applicant')
+                {
+                    $user->is_applicant =1;
+                }else if($user_type && $user_type->user_type == 'super_admin'){
+                    $user->is_super_admin =1;
+                }else if($user_type && $user_type->user_type == 'company_admin'){
+                    $user->is_company_admin =1;
+                }else{
+                     $user->is_company_hr =  $user->is_applicant =  $user->is_super_admin = $user->is_company_admin =0 ;
+                }
          
             try {
                 // dd($user);

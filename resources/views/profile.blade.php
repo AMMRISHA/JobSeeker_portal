@@ -31,7 +31,7 @@
                                             @if( $user_details  && $user_details->photo != '')
                                             <img width="100px" height="100px" src="{{ asset('storage/'.$user_details->photo) }}" alt="user not found" style="border-radius: 50%" />
                                             @else
-                                                <p>Not found</p>
+                                             
                                             {{-- <img width="60px" height="60px" src="{{ asset('assets/images/users/user.jpg') }}" alt="user" style="border-radius: 50%" /> --}}
                                             @endif
 

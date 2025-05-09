@@ -60,10 +60,10 @@
                                                                 @if($user_details && $user_details->photo)
                                                                     <img src="{{ asset('storage/' . $user_details->photo) }}" width="100" height="100" alt="User Photo" style="border-radius: 50%;" />
                                                                 @else
-                                                                    @if($user_details->gender == 'female')
-                                                                        <img src="{{ asset('assets/images/users/girl.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="Default Girl" />
+                                                                    @if( $user_details && $user_details->gender == 'female')
+                                                                        <img src="{{ asset('images/girl.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="" />
                                                                     @else
-                                                                        <img src="{{ asset('assets/images/users/boy.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="Default Boy" />
+                                                                        <img src="{{ asset('images/boy.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="" />
                                                                     @endif
                                                                 @endif
                                                             <br>
@@ -107,7 +107,7 @@
                                         <label class="col-form-label" >Father/Spouse Name</label>
                                         <input type="text" class="form-control input-box-inner-style "
                                             name="father_name" placeholder="Father/Spouse Name"
-                                            value="{{$user_details->father_name}}"
+                                            value="{{$user_details && $user_details->father_name}}"
                                             maxlength="50">
                                     </div>
 
@@ -117,7 +117,7 @@
                                         <label >Mother's Name</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="mother_name" placeholder="Mother's Name" 
-                                             value="{{$user_details->mother_name}}"
+                                             value="{{$user_details && $user_details->mother_name}}"
                                             maxlength="50" value="">
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@
                                         <label >Aadhar No.</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="aadhar_no" placeholder="Aandhar No." 
-                                             value="{{$user_details->aadhar_no}}">
+                                             value="{{$user_details && $user_details->aadhar_no}}">
                                     </div>
                                 </div>     
 
@@ -214,7 +214,7 @@
                                     <!-- Current Address -->
                                     <div class="col-md-4">
                                         <div class="form-group" style="margin-bottom:15px !important;">
-                                            <label style="margin-bottom: 0.2rem;">Address</label>
+                                            <label >Address</label>
                                             <input type="text" class="form-control input-box-inner-style"
                                                 name="address_2" maxlength="50" placeholder="Address"
                                                 value="@if(Request::old('address_2')){{Request::old('address_2')}}@elseif($logged_in_user->address_2){{$logged_in_user->address_2}}@endif">
@@ -224,12 +224,12 @@
                                             <label >Country</label>
                                             <select class="form-control form-select shadow-none text-dark input-box-inner-style border"
                                                     id="country-dd" name="country" >
-                                                <option value="{{ $user_details->country }}">
-                                                    {{ $user_details->country ? get_country_name($user_details->country) : 'Select Country' }}
+                                                <option value="{{$user_details && $user_details->country }}">
+                                                    {{ $user_details && $user_details->country ? get_country_name($user_details->country) : 'Select Country' }}
                                                 </option>
                                                 @foreach ($country_details as $country)
                                                     <option value="{{ $country->id }}"
-                                                        @if (Request::old('country') == $country->id || $country->id == $user_details->country) 
+                                                       @if (Request::old('country') == $country->id || ($user_details && $country->id == $user_details->country)) 
                                                             selected 
                                                         @endif>
                                                         {{ $country->title_en }}
@@ -241,25 +241,28 @@
                                         <div class="col-md-4">
                                             <label >State</label>
                                             <select class="form-control form-select shadow-none text-dark input-box-inner-style border"
-                                                    name="state" id="state-dd" value="$user_details->state" data-user-id="{{$user_details->state}}" > 
-                                                    @if ($user_details->state)
-                                                        <option value="{{ $user_details->state }}" selected>
-                                                            {{ get_state_name($user_details->state) }}
-                                                        </option>
-                                                    @else
-                                                        <option value="">Select State</option>
-                                                    @endif
-                                                    @foreach ($state_details as $state)
-                                                        <option value="{{ $state->id }}"
-                                                            @if (Request::old('state') == $state->id || $state->id == $user_details->state) 
-                                                                selected 
-                                                            @endif>
-                                                            {{ $state->name }}
-                                                        </option>
-                                                     @endforeach
+                                                name="state" id="state-dd"
+                                                data-user-id="{{ optional($user_details)->state }}">
 
+                                                @if (!empty($user_details) && $user_details->state)
+                                                    <option value="{{ $user_details->state }}" selected>
+                                                        {{ get_state_name($user_details->state) }}
+                                                    </option>
+                                                @else
+                                                    <option value="">Select State</option>
+                                                @endif
+
+                                                @foreach ($state_details as $state)
+                                                    <option value="{{ $state->id }}"
+                                                        @if (Request::old('state') == $state->id || (optional($user_details)->state == $state->id))
+                                                            selected
+                                                        @endif>
+                                                        {{ $state->name }}
+                                                    </option>
+                                                @endforeach
 
                                             </select>
+
                                         </div>
                                         
                                        
@@ -287,18 +290,17 @@
                                         <div class="form-group  row">
                                                                 
                                             
-                                        <label class="col-form-label">About/expertise</label> <br>
+                                            <label class="col-form-label">About/expertise</label> <br>
                                             <div class="col-sm-12 col-md-6">
-    
-                                        <textarea  class="form-control input-box-inner-style "
-                                            name="about" placeholder="About/Expertise"
-                                            value="{{$user_details->about}}"
-                                            maxlength="500">{{ $user_details->about }}</textarea>
+        
+                                                <textarea name="about" id="about" class="form-control">
+                                                    {{ old('about', optional($user_details)->about) }}
+                                                </textarea>
 
                                             </div><!--col-->
     
 
-                                    </div>   <!-- form-group --> 
+                                        </div>   <!-- form-group --> 
                                
                                     <!-- identity Information starts -->
                                     
@@ -480,7 +482,16 @@ hr{
 <!-- jQuery -->
 
 
-@push('after-scripts')
+@push('scripts')
+
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#about'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 
 <script>
   $(document).ready(function () {

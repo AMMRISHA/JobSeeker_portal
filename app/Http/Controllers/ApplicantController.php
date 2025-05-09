@@ -26,7 +26,8 @@ class ApplicantController extends Controller
 
         public function editprofile(){
             $logged_in_user = Auth::user();
-                $user_details = Applicant::where('user_id' , $logged_in_user->id)->first();
+         
+            $user_details = Applicant::where('user_id' , $logged_in_user->id)->first();
             $country_details = Country::all();
             $state_details = State::all();
             
