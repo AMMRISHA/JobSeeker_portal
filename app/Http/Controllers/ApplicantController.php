@@ -17,6 +17,7 @@ use App\Models\Applicant;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+
 use Carbon\Carbon;
 
 
@@ -120,7 +121,6 @@ class ApplicantController extends Controller
             $state_details = State::all();
             $job_details = JobDetails::where('job_id' , $job_id)->first();
 
-
             return view('apply_job',[
                'logged_in_user'=>$logged_in_user ,
                'applicant_details'=>$applicant_details  ,
@@ -174,10 +174,14 @@ class ApplicantController extends Controller
                 );
                 $application = Applicant::where('user_id' , $request->id)->first();
                 AppliedJob::updateOrCreate(
-                    ['applicant_id' => $application->applicant_id ],
+                    ['applicant_id' => $application->applicant_id ,
+                     'job_id' => $request->job_id,
+                 ],
                     [
                         'job_id' => $request->job_id ,
                         'user_id'=>$request->id ,
+                        'skills' =>$request->skill ,
+                        'desc_yourself'=>$request->about ,
                         'applied_at'=>  Carbon::now() ,
                     ]
                     );
@@ -261,19 +265,30 @@ class ApplicantController extends Controller
         public function deleteAlldocument(Request $request, $id, $columnname){
             $application_details= Applicant::where('applicant_id', $id)->first();
              if (!empty($application_details->$columnname) && Storage::disk('public')->exists($application_details->$columnname)) {
-            // dd("called" ,$staff_id , $columnname , $staff_details);
-            // Delete file from storage
+         
             Storage::disk('public')->delete($application_details->$columnname);
             
            
         }
-         // Remove file path from the database
+       
          $application_details->$columnname= null;
-         // dd( $staff_details->$columnname);
+  
           $application_details->save();
 
         return redirect()->back()->with('success', 'Contract document deleted successfully');
    
+
+        }
+
+        public function withdrawAppliedJob($job_id){
+                $user_id = auth()->id();
+
+                // Delete the application record
+                AppliedJob::where('user_id', $user_id)
+                        ->where('job_id', $job_id)
+                        ->delete();
+
+                return redirect()->back()->with('success', 'You have withdrawn your application.');
 
         }
 

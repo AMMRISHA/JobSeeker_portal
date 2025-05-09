@@ -20,6 +20,7 @@ Route::post('add-signup-data', [SignupController::class, 'submitSignupForm'])->n
 Route::get('login-form', [LoginController::class, 'showLoginForm'])->name('login-form');
 Route::get('about',[HomeController::class, 'showAbout'])->name('about');
 Route::get('profile' ,[HomeController::class , 'showprofile'])->name('profile');
+Route::get('applied_jobs' ,[HomeController::class , 'showallappliedjobs'])->name('show.all.applied.jobs');
 Route::post('login', [App\Http\Controllers\LoginController::class, 'login'])->name('login');
 Route::get('verify/{email}' , [SignupController::class , 'verify'])->name('verify');
 Route::post('verified', [SignupController::class , 'verified'])->name('verified');
@@ -38,6 +39,8 @@ Route::post('search' ,[HomeController::class , 'search'])->name('job.search');
 Route::get('editprofile' ,[ApplicantController::class , 'editprofile'])->name('abasic.info.edit');
 Route::post('updatebasicinfo',[ApplicantController::class , 'save'])->name('update.basic.info');
 Route::get('job/{job_id}',[ApplicantController::class , 'jobForApply'])->name('job');
+
+Route::get('withdraw/{job_id}',[ApplicantController::class , 'withdrawAppliedJob'])->name('withdraw');
 
 Route::get('apply/{job_id}',[ApplicantController::class , 'apply'])->name('apply');
 Route::post('applicaion_save',[ApplicantController::class , 'applicationSave'])->name('application.save');

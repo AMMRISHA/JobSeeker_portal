@@ -21,7 +21,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="{{route('profile')}}">View Profile</a>
             <a class="dropdown-item" href="{{ route('abasic.info.edit') }}">Update</a>
-            <a class="dropdown-item" href="#">Applications</a>
+            <a class="dropdown-item" href="{{route('show.all.applied.jobs')}}">Applications</a>
             <form action="{{route('logout')}}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
                 @csrf
             

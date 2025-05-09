@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Applicant;
+use App\Models\AppliedJob;
 
 
 
@@ -41,6 +42,22 @@ class HomeController extends Controller
             'logged_in_user' =>$logged_in_user  ,
             'user_details' => $user_details 
         ]);
+    }
+
+
+    public function showallappliedjobs(){
+         $logged_in_user = Auth::user();
+
+    $job_details = DB::table('applied_jobs')
+        ->join('jobs', 'applied_jobs.job_id', '=', 'jobs.job_id')
+        ->where('applied_jobs.user_id', $logged_in_user->id)
+        ->select('jobs.*', 'applied_jobs.applied_at')
+        ->get();
+
+    return view('all_applied_jobs', [
+        'job_details' => $job_details,
+        'logged_in_user' => $logged_in_user
+    ]);
     }
     public function addwishlist($job)
     {
@@ -109,5 +126,7 @@ class HomeController extends Controller
 
     return response()->json(['html' => '']);
 }
+
+
 
 }

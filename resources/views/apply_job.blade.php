@@ -300,6 +300,21 @@
     
 
                                     </div>   <!-- form-group --> 
+
+                                    <div class="form-group row">
+                                     <label for="" class="col-form-label">Skills</label>
+                                            <div class="col-sm-12 col-md-6">
+    
+                                        <textarea  class="form-control input-box-inner-style "
+                                            name="skill" placeholder="Enter your skill"
+                                            value=""
+                                            maxlength="500"></textarea>
+
+                                            </div><!--col-->
+    
+
+
+                                    </div>
                                
                                     <!-- identity Information starts -->
                

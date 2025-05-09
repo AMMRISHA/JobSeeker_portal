@@ -20,6 +20,11 @@
                  <strong>    Title :</strong>   
                  {{$job_details->title}}
                 </div>
+                  <div class="col-md-12 my-2">
+                
+                 <strong> Company :</strong>   
+                 {{$job_details->company}}
+                </div>
                 <div class="col-md-12 my-1">
                     <strong>Description :</strong>
                     {{$job_details->description}}
