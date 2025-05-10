@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
+
 
 
 class LoginController extends Controller
@@ -16,8 +19,10 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-    // dd("called");
-    // Validate the incoming request
+    $user =  $request->email;
+    $user_details = User::where('email' ,$request->email )
+    ->first();
+
     $request->validate([
         'email' => 'required|email',
         'password' => 'required|min:6',
@@ -32,8 +37,14 @@ class LoginController extends Controller
             ]);
         }
 
+        if($user_details->user_type_id == 2)
+        {
+            return redirect()->intended(route('index'));
+        }else{
+              return redirect()->intended(route('dashboard'));
+        }
       
-        return redirect()->intended(route('index'));
+      
     }
 
 

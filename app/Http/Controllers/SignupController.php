@@ -76,7 +76,7 @@ class SignupController extends Controller
                 }else{
                      $user->is_company_hr =  $user->is_applicant =  $user->is_super_admin = $user->is_company_admin =0 ;
                 }
-         
+                $user->save();
             try {
                 // dd($user);
                 // Send the custom email verification notification

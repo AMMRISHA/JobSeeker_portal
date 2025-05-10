@@ -6,6 +6,7 @@ use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,8 @@ use App\Http\Controllers\Auth\VerificationController;
 Auth::routes(['verify' => true]);
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::get('signup', [SignupController::class, 'showSignupForm'])->name('signup');
 Route::post('add-signup-data', [SignupController::class, 'submitSignupForm'])->name('add.signup.data');
 Route::get('login-form', [LoginController::class, 'showLoginForm'])->name('login-form');
