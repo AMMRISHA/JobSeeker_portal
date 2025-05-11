@@ -48,7 +48,7 @@ class HomeController extends Controller
     public function showallappliedjobs(){
          $logged_in_user = Auth::user();
 
-    $job_details = DB::table('applied_jobs')
+        $job_details = DB::table('applied_jobs')
         ->join('jobs', 'applied_jobs.job_id', '=', 'jobs.job_id')
         ->where('applied_jobs.user_id', $logged_in_user->id)
         ->select('jobs.*', 'applied_jobs.applied_at')

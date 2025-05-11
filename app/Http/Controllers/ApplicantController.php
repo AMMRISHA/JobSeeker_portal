@@ -240,9 +240,12 @@ class ApplicantController extends Controller
                                             $path = $file->storeAs('uploads/applicant_profiles/resume', $filename, 'public');
 
                                             // Save file path in database
+                                           Applicant::updateOrCreate(
+                                                ['user_id' => $request->id],
+                                                ['resume' =>$path]
+
+                                           );
                                           
-                                           $application_details->$document_column_name = $path;
-                                            $application_details->save();
                                 }
 
                         return redirect()->back()

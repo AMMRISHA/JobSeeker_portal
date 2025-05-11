@@ -13,6 +13,7 @@ use App\Notifications\CustomEmailVerification;
 use Illuminate\Bus\Queueable;
 use App\Models\Applicant;
 use App\Models\JobCategory;
+use App\Models\HrDetails;
 
 
 
@@ -48,7 +49,7 @@ class SignupController extends Controller
 
             // dd($code);
             // Create a new user
-
+// dd($request->application_type);
           
             $user = User::create([
                 'name' => $request->Firstname . ' ' . $request->Lastname,
@@ -56,11 +57,21 @@ class SignupController extends Controller
                 'password' => Hash::make($request->password),
                 'mobile' => $request->mobile,
                 'birthday' => $birthday,
-                'verification_code'=> $code
+                'verification_code'=> $code ,
+                'user_type_id' => $request->application_type ,
             ]);
 
+            if($user_type && $user_type->user_type_id == 4){
+                HrDetails::updateOrCreate(
+               ['user_id' => $request->id],
+               [
+                 'user_id' => $request->id,
+                 'email'  => $request->email ?: null,
+                  'phone_no'  => $request->mobile ?: null,
+               ]
+               );
+            }
 
-            //set applicant type
 
               if($user_type && $user_type->user_type == 'HR')
                 {

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-white bg-white">
+<nav class="navbar navbar-expand-lg navbar-white bg-white fixed-top ">
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">JOB-SEEKER</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav"
@@ -23,6 +23,8 @@
     align-items: center;
     flex-direction: column;">
             <a class="dropdown-item d-flex align-items-center" href="{{route('profile')}}" style="gap:10px;"><i class="fa-solid fa-eye"></i> <span>View Profile</span> </a>
+            <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}" style="gap:10px;"><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a>
+           
             <a class="dropdown-item d-flex align-items-center" href="{{ route('abasic.info.edit') }}" style="gap:10px;"><i class="fa-solid fa-pen-to-square"></i><span> Update</span></a>
             @if(auth()->user()->is_applicant)
             <a class="dropdown-item d-flex align-items-center" href="{{route('show.all.applied.jobs')}}" style="gap:10px;"><i class="fa-solid fa-cloud-arrow-up"></i><span>Applications</span> </a>
@@ -31,7 +33,7 @@
                 @csrf
             
                 <button type="submit" class="btn btn-outline-danger">
-                    <i class="fas fa-trash"></i>    Logout
+                     Logout <i class="fa-solid fa-right-from-bracket"></i>
                 </button>
             </form>
         

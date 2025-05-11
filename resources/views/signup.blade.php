@@ -50,8 +50,8 @@
                                     <label for="is_applicant" class="form-label text-white" style="font-size:15px">What is your designation?</label>
                                 </div>
                                 <div class="col-md-4">
-                                    <select class="form-select" name="is_applicant" id="is_applicant">
-                                        <option value="" selected>Open this select menu</option>
+                                    <select class="form-select" name="application_type" id="is_applicant">
+                                        <option value="">Open this select menu</option>
                             
                                         @foreach($user_type as $user)
 
@@ -59,6 +59,16 @@
                                         @endforeach
                                     </select>
                                 </div>
+                    </div>
+                </div>
+                <div id="hr-fields" style="display: none;">
+                    <div class="row my-2">
+                        <div class="col-md-6">
+                            <label class="form-label text-white">Company Name</label>
+                            <input type="text" name="company_name" class="form-control" placeholder="Enter company name">
+                        </div>
+                        
+                        
                     </div>
                 </div>
             
@@ -75,6 +85,20 @@
 
 
 @push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userTypeSelect = document.getElementById('is_applicant');
+        const hrFields = document.getElementById('hr-fields');
+
+        userTypeSelect.addEventListener('change', function () {
+            if (this.value === '3') {
+                hrFields.style.display = 'block';
+            } else {
+                hrFields.style.display = 'none';
+            }
+        });
+    });
+</script>
 
 
 <script>

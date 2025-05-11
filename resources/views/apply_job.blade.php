@@ -61,7 +61,7 @@
                                                                 @if($applicant_details && $applicant_details->photo)
                                                                     <img src="{{ asset('storage/' . $applicant_details->photo) }}" width="100" height="100" alt="User Photo" style="border-radius: 50%;" />
                                                                 @else
-                                                                    @if($applicant_details->gender == 'female')
+                                                                    @if( $applicant_details && $applicant_details->gender == 'female')
                                                                         <img src="{{ asset('assets/images/users/girl.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="Default Girl" />
                                                                     @else
                                                                         <img src="{{ asset('assets/images/users/boy.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="Default Boy" />
@@ -108,7 +108,7 @@
                                         <label class="col-form-label" >Father/Spouse Name</label>
                                         <input type="text" class="form-control input-box-inner-style "
                                             name="father_name" placeholder="Father/Spouse Name"
-                                            value="{{$applicant_details->father_name}}"
+                                            value="{{$applicant_details && $applicant_details->father_name ? $applicant_details->father_name : '' }}"
                                             maxlength="50">
                                     </div>
 
@@ -118,8 +118,8 @@
                                         <label >Mother's Name</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="mother_name" placeholder="Mother's Name" 
-                                             value="{{$applicant_details->mother_name}}"
-                                            maxlength="50" value="">
+                                             value="{{$applicant_details && $applicant_details->mother_name ? $applicant_details->mother_name : ''}}"
+                                            maxlength="50">
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4">
@@ -127,7 +127,7 @@
                                         <label >Aadhar No.</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="aadhar_no" placeholder="Aandhar No." 
-                                             value="{{$applicant_details->aadhar_no}}">
+                                             value="{{$applicant_details &&  $applicant_details->aadhar_no ?  $applicant_details->aadhar_no : ''}}">
                                     </div>
                                 </div>     
 
@@ -225,12 +225,12 @@
                                             <label >Country</label>
                                             <select class="form-control form-select shadow-none text-dark input-box-inner-style border"
                                                     id="country-dd" name="country" >
-                                                <option value="{{ $applicant_details->country }}">
-                                                    {{ $applicant_details->country ? get_country_name($applicant_details->country) : 'Select Country' }}
+                                                <option value="{{ $applicant_details &&  $applicant_details->country ? $applicant_details->country : '' }}">
+                                                    {{ $applicant_details &&  $applicant_details->country ? get_country_name($applicant_details->country) : 'Select Country' }}
                                                 </option>
                                                 @foreach ($country_details as $country)
                                                     <option value="{{ $country->id }}"
-                                                        @if (Request::old('country') == $country->id || $country->id == $applicant_details->country) 
+                                                        @if (Request::old('country') == $country->id || $country->id == ($applicant_details->country ?? null)) 
                                                             selected 
                                                         @endif>
                                                         {{ $country->title_en }}
@@ -241,26 +241,22 @@
 
                                         <div class="col-md-4">
                                             <label >State</label>
-                                            <select class="form-control form-select shadow-none text-dark input-box-inner-style border"
-                                                    name="state" id="state-dd" value="$applicant_details->state" data-user-id="{{$applicant_details->state}}" > 
-                                                    @if ($applicant_details->state)
-                                                        <option value="{{ $applicant_details->state }}" selected>
-                                                            {{ get_state_name($applicant_details->state) }}
-                                                        </option>
-                                                    @else
-                                                        <option value="">Select State</option>
-                                                    @endif
-                                                    @foreach ($state_details as $state)
-                                                        <option value="{{ $state->id }}"
-                                                            @if (Request::old('state') == $state->id || $state->id == $applicant_details->state) 
-                                                                selected 
-                                                            @endif>
-                                                            {{ $state->name }}
-                                                        </option>
-                                                     @endforeach
+                                          <select class="form-control form-select shadow-none text-dark input-box-inner-style border"
+                                                    name="state" id="state-dd" data-user-id="{{ $applicant_details->state ?? '' }}">
+                                                
+                                                <option value="">Select State</option> {{-- Default option always shown --}}
 
+                                                @foreach ($state_details as $state)
+                                                    <option value="{{ $state->id }}"
+                                                        @if (old('state') == $state->id || ($applicant_details && $state->id == $applicant_details->state))
+                                                            selected
+                                                        @endif>
+                                                        {{ $state->name }}
+                                                    </option>
+                                                @endforeach
 
                                             </select>
+
                                         </div>
                                         
                                        
@@ -293,8 +289,8 @@
     
                                         <textarea  class="form-control input-box-inner-style "
                                             name="about" placeholder="About/Expertise"
-                                            value="{{$applicant_details->about}}"
-                                            maxlength="500">{{$applicant_details->about }}</textarea>
+                                            value="{{$applicant_details && $applicant_details->about ? $applicant_details->about : ''}}"
+                                            maxlength="500">{{$applicant_details && $applicant_details->about ? $applicant_details->about : ''}}</textarea>
 
                                             </div><!--col-->
     
@@ -329,7 +325,7 @@
                                          <div class="col-md-4" style="margin-top:10px !important;">
                                     <div class=" form-container">
                                         <div class="form-group">
-                                        <form action="{{ route('file-upload', ['id'=>$applicant_details->applicant_id,'document_column_name'=>'resume'] ) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('file-upload', ['id'=> $logged_in_user->id,'document_column_name'=>'resume'] ) }}" method="POST" enctype="multipart/form-data">
 
                                                 @csrf
                                                 <label for="offerLetter">Resume</label>

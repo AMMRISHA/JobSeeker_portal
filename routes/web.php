@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -80,3 +81,9 @@ Route::post('/email/verification-notification', [VerificationController::class, 
 
 // Default Auth routes with email verification support
 
+
+// Application 
+
+Route::get('application' , [ApplicationController::class , 'viewAllApplication'])->name('application');
+
+Route::get('applicant_profile/{user_id}', [ApplicationController::class , 'viewApplicantProfile'])->name('applicant_profile');

@@ -9,6 +9,7 @@ use App\Models\User;
 
 
 
+
 class LoginController extends Controller
 {
    
@@ -37,13 +38,9 @@ class LoginController extends Controller
             ]);
         }
 
-        if($user_details->user_type_id == 2)
-        {
+
             return redirect()->intended(route('index'));
-        }else{
-              return redirect()->intended(route('dashboard'));
-        }
-      
+       
       
     }
 
