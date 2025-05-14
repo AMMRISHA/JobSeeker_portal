@@ -10,13 +10,13 @@
 <i class="fas fa-edit text-sub " style="color:white !important;"></i>   Edit Profile
 </a>
 </div>
-<div class="bg-soft-primary my-5" style="border:none;">
+<div class=" col-md-12 bg-soft-primary my-5" style="border:none;">
     <div class="container-fluid">
         <div class="row mx-auto">
             <div class="col-md-6">
 
             </div>
-            <div class="col-8 mx-auto">
+            <div class="col-md-12 mx-auto">
                 <div class="card">
                     <div class="card-body">
                       
@@ -28,12 +28,17 @@
                             margin-bottom:1px solid ;
                                 flex-direction: column;">
                                     <div class="mx-auto">
-                                            @if( $user_details  && $user_details->photo != '')
-                                            <img width="100px" height="100px" src="{{ asset('storage/'.$user_details->photo) }}" alt="user not found" style="border-radius: 50%" />
-                                            @else
-                                             
-                                            {{-- <img width="60px" height="60px" src="{{ asset('assets/images/users/user.jpg') }}" alt="user" style="border-radius: 50%" /> --}}
-                                            @endif
+                                             <br>
+                                                                @if($user_details && $user_details->photo)
+                                                                    <img src="{{ asset('storage/' . $user_details->photo) }}" width="100" height="100" alt="User Photo" style="border-radius: 50%;" />
+                                                                @else
+                                                                    @if( $user_details && $user_details->gender == 'female')
+                                                                        <img src="{{ asset('images/girl.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="" />
+                                                                    @else
+                                                                        <img src="{{ asset('images/boy.png') }}" width="100" height="100" style="border-radius: 50%;" class="border" alt="" />
+                                                                    @endif
+                                                                @endif
+                                                            <br>
 
                                     </div>
 
@@ -43,7 +48,9 @@
                                      
   
                             </div>
-                          
+</div>
+
+<div class="row">
 
                         <div class="col-md-4">
                             <br>

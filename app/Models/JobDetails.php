@@ -5,38 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class JobDetails extends Model
 {
-    use HasFactory;
+     use HasFactory;
 
-    // Specify the table name (if it does not follow Laravel's naming convention)
-    protected $table = 'jobs';  // Replace with your table name
+    protected $table = 'jobs';               // Your table name
+    protected $primaryKey = 'job_id';        // 👈 Important: Tell Laravel what your primary key is
+    protected $guarded = [];                 // Allow mass assignment (if needed)
+    public $timestamps = true; 
 
-    // Define the primary key for the table
-    protected $primaryKey = 'job_id';
-
-    // If the table does not use the default timestamps (created_at, updated_at), set this to false
-    public $timestamps = false;
-
-    // Define the fillable columns (you can specify which columns are mass assignable)
-    protected $fillable = [
-        'title',
-        'description',
-        'category',
-        'key_skills',
-        'city',
-        'country',
-        'added_by',
-        'added_time',
-        'modified_time',
-    ];
-
-    // Optionally, if the 'job_id' is auto-incrementing, you can explicitly define it
-    public $incrementing = true;
-
-    // Optionally, if the 'job_id' is not an integer, you can define its type
-    protected $keyType = 'int';
-
-    // Optionally, if you want to manage timestamps manually, set these properties
-    // public $timestamps = false;  // If not using Laravel's created_at and updated_at columns
+    
 }

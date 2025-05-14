@@ -6,7 +6,7 @@ use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\SignupController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgetPasswordController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -15,7 +15,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\VerificationController;
 
 Auth::routes(['verify' => true]);
-
+Route::get('/home', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified']) 
+    ->name('home');
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -25,21 +27,19 @@ Route::get('login-form', [LoginController::class, 'showLoginForm'])->name('login
 Route::get('about',[HomeController::class, 'showAbout'])->name('about');
 Route::get('profile' ,[HomeController::class , 'showprofile'])->name('profile');
 Route::get('applied_jobs' ,[HomeController::class , 'showallappliedjobs'])->name('show.all.applied.jobs');
-Route::post('login', [App\Http\Controllers\LoginController::class, 'login'])->name('login');
+Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::get('verify/{email}' , [SignupController::class , 'verify'])->name('verify');
 Route::post('verified', [SignupController::class , 'verified'])->name('verified');
-Route::post('logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('forgetpassword' , [ForgetPasswordController::class , 'forgetPasswordForm'])->name('forget.password');
-Route::get('/home', [HomeController::class, 'index'])
-    ->middleware(['auth', 'verified']) 
-    ->name('home');
+
 
 // job search for index page
 
 Route::post('search' ,[HomeController::class , 'search'])->name('job.search');
 
 //edit profile
-
+Route::post('applicant-query' , [ApplicantController::class , 'applicantQuery'])->name('applicant.query');
 Route::get('editprofile' ,[ApplicantController::class , 'editprofile'])->name('abasic.info.edit');
 Route::post('updatebasicinfo',[ApplicantController::class , 'save'])->name('update.basic.info');
 Route::get('job/{job_id}',[ApplicantController::class , 'jobForApply'])->name('job');
@@ -82,8 +82,14 @@ Route::post('/email/verification-notification', [VerificationController::class, 
 // Default Auth routes with email verification support
 
 
-// Application 
+// Application at hr side
+Route::middleware(['auth'])->group(function () {
+    Route::get('application', [ApplicationController::class, 'viewAllApplication'])->name('application');
+    Route::get('applicant_profile/{user_id}', [ApplicationController::class, 'viewApplicantProfile'])->name('applicant_profile');
+    Route::get('all-jobs', [ApplicationController::class, 'viewAllJobs'])->name('all.jobs');
+    Route::post('store-job', [ApplicationController::class, 'storeJob'])->name('store.job');
+    Route::post('edit-job', [ApplicationController::class, 'editJob'])->name('update.job');
+   });
 
-Route::get('application' , [ApplicationController::class , 'viewAllApplication'])->name('application');
 
-Route::get('applicant_profile/{user_id}', [ApplicationController::class , 'viewApplicantProfile'])->name('applicant_profile');
+

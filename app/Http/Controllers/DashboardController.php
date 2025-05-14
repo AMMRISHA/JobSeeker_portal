@@ -12,7 +12,9 @@ class DashboardController extends Controller{
 
     public function index(){
         $logged_in_user = Auth::user();
-
+        if (!$logged_in_user) {
+                return redirect()->route('login-form')->with('error', 'Please log in to access your jobs.');
+            }
         $user_details = DB::table('users')
             ->where('users.email', $logged_in_user->email)
             ->join('user_type', 'users.user_type_id', '=', 'user_type.user_type_id')

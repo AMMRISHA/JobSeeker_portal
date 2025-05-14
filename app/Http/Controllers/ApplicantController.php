@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JobDetails;
 use App\Models\JobCategory;
 use App\Models\Country;
+ use App\Models\ApplicantQuery;
 use App\Models\AppliedJob;
 use App\Models\State;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Notifications\ApplicationSubmittedNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminQueryNotification;
+
+
 
 
 class ApplicantController extends Controller
@@ -133,7 +138,13 @@ class ApplicantController extends Controller
         }
 
         public function applicationSave(Request $request){
-     
+            $already_applied =  DB::table('applied_jobs')
+                                ->where('user_id' , $request->id)
+                                ->where('job_id' , $request->job_id)
+                                ->first();
+            if ($already_applied) {
+    return redirect()->back()->with('error', 'You have already applied for this job.');
+}
             $user_details = User::where('id' , $request->id)->first();
             $application = Applicant::where('user_id', $request->id)->first();
             $job_details = JobDetails::where('job_id' , $request->job_id)->first();
@@ -299,6 +310,30 @@ class ApplicantController extends Controller
                         ->delete();
 
                 return redirect()->back()->with('success', 'You have withdrawn your application.');
+
+        }
+
+
+        public function applicantQuery(Request $request){
+
+            $logged_in_user = Auth::user();
+
+            // Access the 'query' field correctly
+            $query = $request->input('query'); // This is the correct way
+
+            // Store the data
+            $query = ApplicantQuery::create([
+                'user_id' => $logged_in_user->id,
+                'query' => $query,
+                'sended_at' => Carbon::now(),
+            ]);
+
+            // Send notification (same as before)
+            $adminEmail = 'career.jobs.jobseeker@gmail.com';
+            Mail::to($adminEmail)->send(new AdminQueryNotification($logged_in_user, $query));
+
+            return redirect()->route('index')->with('success', 'Your query has been submitted successfully.');
+
 
         }
 

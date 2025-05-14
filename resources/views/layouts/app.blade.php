@@ -34,7 +34,7 @@
 
   @include('partials.navbar')
 
-  <div class="container mt-4 py-4" style=" background-color: rgb(247 248 255) !important;font-family: 'Source Sans Pro', sans-serif !important;   padding-left: 0px !important;
+  <div class="container mt-5 py-4" style=" background-color: rgb(247 248 255) !important;font-family: 'Source Sans Pro', sans-serif !important;   padding-left: 0px !important;
     padding-right: 0px !important;width: 100% !important;
     max-width: 100% !important;">
     @yield('content')

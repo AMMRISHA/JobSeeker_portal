@@ -99,8 +99,17 @@
               <p>
                 <strong>{{ get_country_name($jobs->country) }}</strong>,
                 <strong>{{ get_city_name($jobs->city) }}</strong> <br>
-              <a href="{{route('job', ['job_id' => $jobs->job_id])}}"><button class=" my-4 btn btn-primary">Apply</button></a> 
+
+               
               </p>
+              @if(Auth::check() && Auth::user()->is_applicant == 1 || !Auth::check())
+                      <a href="{{ route('job', ['job_id' => $jobs->job_id]) }}">
+                          <button class="my-4 btn btn-primary">Apply</button>
+                      </a>
+                  @endif
+                  <a href="{{ route('job', ['job_id' => $jobs->job_id]) }}">
+                      <button class="my-4 btn btn-primary">View</button>
+                  </a>
             </div>
            
           </div>
@@ -252,15 +261,16 @@
       <div class="container">
         <div class="row d-flex justify-content-center">
           <div class="col-md-7 text-center heading-section heading-section-white">
-            <h2>Subcribe to our Newsletter</h2>
+            <h2>Raise Your Query</h2>
             <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the
               blind texts. Separated they live in</p>
             <div class="row d-flex justify-content-center mt-4 mb-4">
               <div class="col-md-8">
-                <form action="#" class="subscribe-form">
+                <form action="{{route('applicant.query')}}" method="post" class="subscribe-form">
+                  @csrf
                   <div class="form-group d-flex">
-                    <input type="text" class="form-control" placeholder="Enter email address">
-                    <input type="submit" value="Subscribe" class="submit px-3">
+                    <input type="text" class="form-control"  name="query" placeholder="Enter email address">
+                    <input type="submit" value="Send" class="submit px-3">
                   </div>
                 </form>
               </div>

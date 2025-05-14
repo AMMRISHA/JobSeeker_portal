@@ -59,9 +59,26 @@ class SignupController extends Controller
                 'birthday' => $birthday,
                 'verification_code'=> $code ,
                 'user_type_id' => $request->application_type ,
+                
             ]);
 
-            if($user_type && $user_type->user_type_id == 4){
+            if($request->application_type == 2){
+                $user->is_applicant = 1;
+            }else   if($request->application_type == 1){
+        
+                $user->is_super_admin = 1;
+            } else   if($request->application_type == 3){
+               
+                $user->is_company_hr= 1;
+                
+            } else   if($request->application_type == 4){
+               
+                $user->is_company_admin	= 1;
+            }else{
+                $user->is_applicant   =  $user->is_company_hr   =  $user->is_company_admin  =0 ;
+            }
+              $user->save();
+            if($user_type && $user_type->user_type_id == 3){
                 HrDetails::updateOrCreate(
                ['user_id' => $request->id],
                [
@@ -87,7 +104,7 @@ class SignupController extends Controller
                 }else{
                      $user->is_company_hr =  $user->is_applicant =  $user->is_super_admin = $user->is_company_admin =0 ;
                 }
-                $user->save();
+              
             try {
                 // dd($user);
                 // Send the custom email verification notification

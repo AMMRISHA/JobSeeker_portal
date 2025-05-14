@@ -19,7 +19,7 @@
     <!-- Start Page Content -->
     <!-- ============================================================== -->
     <div class="row">
-        <div class="col-8 mx-auto">
+        <div class="col-md-12 mx-auto">
             <div class="card">
                 <div class="card-body">                
                                      
@@ -42,7 +42,7 @@
                     <div class="my-5 card-body">
                             
                                
-                           <form action="{{route('update.basic.info')}}" method ="post" enctype="multipart/form-data">
+                           <form action="{{route('update.job.info')}}" method ="post" enctype="multipart/form-data">
 
                             @csrf
 
@@ -107,7 +107,7 @@
                                         <label class="col-form-label" >Father/Spouse Name</label>
                                         <input type="text" class="form-control input-box-inner-style "
                                             name="father_name" placeholder="Father/Spouse Name"
-                                            value="{{$user_details && $user_details->father_name}}"
+                                            value="{{$user_details && $user_details->father_name ? $user_details->father_name : ''}}"
                                             maxlength="50">
                                     </div>
 
@@ -117,7 +117,7 @@
                                         <label >Mother's Name</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="mother_name" placeholder="Mother's Name" 
-                                             value="{{$user_details && $user_details->mother_name}}"
+                                             value="{{$user_details && $user_details->mother_name ? $user_details->mother_name : ''}}"
                                             maxlength="50" value="">
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@
                                         <label >Aadhar No.</label>
                                         <input type="text" class="form-control input-box-inner-style"
                                             name="aadhar_no" placeholder="Aandhar No." 
-                                             value="{{$user_details && $user_details->aadhar_no}}">
+                                             value="{{$user_details && $user_details->aadhar_no ? $user_details->aadhar_no : ''}}">
                                     </div>
                                 </div>     
 
