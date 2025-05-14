@@ -3,8 +3,20 @@
 @section('title', 'Jobs')
 
 @section('content')
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <div style="display: flex; justify-content: end; margin-right: 30px;">
-    <button type="button" class="btn btn-primary btn-sm my-5" data-bs-toggle="modal" data-bs-target="#createJobModal">
+    <button type="button" class="btn btn-primary btn-sm my-4" data-bs-toggle="modal" data-bs-target="#createJobModal">
         <i class="fas fa-plus"></i> Create
     </button>
 </div>
@@ -16,8 +28,8 @@
                 <div class="col-md-12">
                     <h3 class="text-start mt-4">All Jobs</h3>
                     <div class="mt-4">
-                        <table class="table dataTable no-footer">
-                            <thead>
+                        <table class="table dataTable no-footer" style="color:black;">
+                            <thead style="font-size:15px !important;color:black;">
                                 <tr>
                                     <th>Id</th>
                                     <th>Company Name</th>
@@ -61,6 +73,7 @@
                                                                 data-country="{{ $jobs->country }}"
                                                                 data-city="{{ $jobs->city }}"
                                                                 data-category="{{ $jobs->category }}"
+                                                                data-state="{{$jobs->state}}"
                                                             >
                                                                 <i class="fas fa-edit text-sub"></i> Edit
                                                             </button>
@@ -188,15 +201,34 @@
                         <label for="edit_description" class="form-label">Job Description</label>
                         <textarea class="form-control" id="edit_description" name="description" rows="3"></textarea>
                     </div>
-
+                  
                     <div class="row">
+                          @if($country_details)
                         <div class="col-md-6 mb-3">
+                           
                             <label for="edit_country" class="form-label">Country</label>
-                            <select class="form-select" id="edit_country" name="country">
-                                <option value="101">India</option>
-                                <option value="102">USA</option>
+                            <select class="form-select" id="country" name="country">
+                             @foreach($country_details as $country)   
+                                 <option value="{{$country->id}}">{{$country->title_en}}</option>
+                             
+                            @endforeach
                             </select>
                         </div>
+                     @endif
+
+                     <div class="col-md-4">
+                                            <label class="form-label">State</label>
+                                            <select class="form-select shadow-none text-dark input-box-inner-style border"
+                                                    name="state"id="stateInput">
+                                                    
+
+                                                    @foreach($state_details as $states)
+
+                                                        <option value="{{$states->id}}">{{$states->name}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+
 
                         @if(isset($job_category) && count($job_category))
                         <div class="col-md-6 mb-3">
@@ -209,14 +241,6 @@
                         </div>
                         @endif
 
-                        <div class="col-md-6 mb-3">
-                            <label for="edit_city" class="form-label">City</label>
-                            <select class="form-select" id="edit_city" name="city">
-                                <option value="1">Kolkata</option>
-                                <option value="2">Delhi</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="modal-footer">
@@ -229,21 +253,38 @@
 </div>
 
 <!-- Script to fill Edit Modal -->
+@endsection
+
+@push('scripts')
+
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const editButtons = document.querySelectorAll('.editJobBtn');
-    editButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            document.getElementById('edit_job_id').value = this.dataset.jobId;
-            document.getElementById('edit_title').value = this.dataset.title;
-            document.getElementById('edit_company_name').value = this.dataset.companyName;
-            document.getElementById('edit_key_skills').value = this.dataset.keySkills;
-            document.getElementById('edit_description').value = this.dataset.description;
-            document.getElementById('edit_country').value = this.dataset.country;
-            document.getElementById('edit_city').value = this.dataset.city;
-            document.getElementById('edit_category').value = this.dataset.category;
-        });
-    });
+$(document).on('click', '.editJobBtn', function () {
+    const button = $(this);
+
+    // Fetch data attributes
+    const state = button.data('state');
+    const title = button.data('title');
+    const companyName = button.data('company-name');
+    const keySkills = button.data('key-skills');
+    const description = button.data('description');
+    const country = button.data('country');
+    const city = button.data('city');
+    const category = button.data('category');
+    const jobId = button.data('job-id');
+
+    // Set the modal fields
+    $('#editJobModal input[name="job_id"]').val(jobId);
+    $('#editJobModal input[name="state"]').val(state);
+    $('#editJobModal input[name="title"]').val(title);
+    $('#editJobModal input[name="company_name"]').val(companyName);
+    $('#editJobModal input[name="key_skills"]').val(keySkills);
+    $('#editJobModal textarea[name="description"]').val(description);
+    $('#editJobModal input[name="country"]').val(country);
+    $('#editJobModal input[name="city"]').val(city);
+    $('#editJobModal input[name="category"]').val(category);
+  
 });
 </script>
-@endsection
+
+
+@endpush

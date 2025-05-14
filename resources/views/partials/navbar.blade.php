@@ -23,8 +23,9 @@
     align-items: center;
     flex-direction: column;">
             <a class="dropdown-item d-flex align-items-center" href="{{route('profile')}}" style="gap:10px;"><i class="fa-solid fa-eye"></i> <span>View Profile</span> </a>
+             @if(! auth()->user()->is_applicant)
             <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}" style="gap:10px;"><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a>
-           
+            @endif
             <a class="dropdown-item d-flex align-items-center" href="{{ route('abasic.info.edit') }}" style="gap:10px;"><i class="fa-solid fa-pen-to-square"></i><span> Update</span></a>
             @if(auth()->user()->is_applicant)
             <a class="dropdown-item d-flex align-items-center" href="{{route('show.all.applied.jobs')}}" style="gap:10px;"><i class="fa-solid fa-cloud-arrow-up"></i><span>Applications</span> </a>

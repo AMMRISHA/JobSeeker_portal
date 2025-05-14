@@ -23,6 +23,7 @@ class HomeController extends Controller
         $logged_in_user = Auth::User();
         $job_details =JobDetails::get();
         $job_category = JobCategory::get();
+      
         $searchflag =0;
         return view('index',[
             'job_details'=> $job_details ,

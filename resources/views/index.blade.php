@@ -44,11 +44,12 @@
                                     <div class="select-wrap">
                                       <div class="icon"><span class="ion-ios-arrow-down"></span></div>
                                       <select name="category" id="category" class="form-control">
+                                        @if($job_category)
                                           @foreach($job_category as $category)
                                           
                                               <option value="{{$category->job_category_id}}">{{$category->job_category}}</option>
                                           @endforeach
-                                        
+                                        @endif
                                       </select>
                                     </div>
                                   </div>

@@ -2,6 +2,22 @@
 @extends('layouts.app')
 
 @section('content')
+
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+
+
 <div class="col-sm-12 col-md-9" style="margin-left: 11px;">
   
     <h4 class="card-title text-center" style="padding: 0px 0px 10px !important;">Apply</h4>

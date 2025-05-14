@@ -3,11 +3,22 @@
 @section('title', 'Dashboard')
 
 @section('content')
+
+                     
 <div class="container-fluid my-5">
     <div class="card">
         <div class="card-body">
-            <h3 class="text-start mt-4">Applied Jobs</h3>
-
+            <div class="row justify-content-between align-items-center">
+            <div class="col-md-4">
+                 <h3 class="text-start mt-4">Results Shown By Skills Filter</h3>
+            </div>
+             <div class="col-md-4 d-flex justify-content-end">
+               <button type="cancel" name="back" class="btn btn-primary btn-sm " value="Back"
+                                                        onclick="document.location ='{{ route('all.applied.jobs') }}'" title="Back">
+                                                        <i class="fa fa-reply" aria-hidden="true"></i> 
+                </button>
+             </div>
+             </div>
             <div class="mt-4 table-responsive">
                 <table class="table table-bordered dataTable no-footer ">
                     <thead class="thead-dark text-center">
@@ -15,6 +26,7 @@
                             <th scope="col">Job ID</th>
                              <th scope="col">User ID</th>                            
                             <th scope="col">Applicant Details</th>
+                             <th scope="col">Applicant Skills</th>
                             <th scope="col">Company Name</th>
                             <th scope="col">Job Details</th>
                             <th scope="col">Applied On</th>
@@ -22,16 +34,20 @@
                         </tr>
                     </thead>
                     <tbody class="py-5">
+                      
                         @forelse($applied_job_application as $applied)
                             <tr>
-                                <td>{{ $applied->job_id }}</td>
-                                <td>{{$applied->id}}</td>
+                                <td>{{ $applied->job_id ? $applied->job_id  : ''}}</td>
+                                <td>{{$applied->id ? $applied->id : ''}}</td>
                                 <td>
-                                    {{ $applied->name }}<br>
-                                    {{ $applied->email }}<br>
-                                    {{ $applied->mobile }}
+                                    {{  $applied->name  ? $applied->name : '' }}<br>
+                                    {{ $applied->email  ? $applied->email : ''}}<br>
+                                    {{ $applied->mobile  ? $applied->mobile : '' }}
                                 </td>
-                                <td>{{ $applied->company_name }}</td>
+                                <td>
+                                    {{$applied->skills}}
+                                </td>
+                                <td>{{ $applied->company_name  ? $applied->company_name : '' }}</td>
                                 <td>
                                     {{ $applied->title }}, {{ get_category_name_by_id($applied->category) }}<br><br>
                                     <strong>Key Skills:</strong> {{ $applied->key_skills }}<br><br>
@@ -47,8 +63,8 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <li><a class="dropdown-item" href="{{ route('applicant_profile', ['user_id' => $applied->id]) }}"><i class="fa-solid fa-eye"></i> Profile</a></li>
                                             <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-eye"></i> Job Details</a></li>
-                                            <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-eye"></i> Not Interested</a></li>
-                                            <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-eye"></i> Interview</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-xmark"></i>  Not Interested</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fas fa-laptop-code"></i> Interview</a></li>
                                         </ul>
                                     </div>
                                 </td>
