@@ -68,9 +68,23 @@
                                             <li><a class="dropdown-item" href="{{ route('applicant_profile', ['user_id' => $applied->user_id , 'job_id'=> $applied->job_id]) }}"><i class="fa-solid fa-eye"></i> Profile</a></li>
                                             <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-eye"></i> Job Details</a></li>
                                             @if($applied->application_status != 'rejected')
-                                            <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-xmark"></i>  Not Interested</a></li>
+                                            <li> <form action="{{route('applicant.not.selected')}}" method="POST">
+                                                @csrf
+                                                    <input type="hidden" value="{{$applied->user_id}}" name="user_id">
+                                                    <input type="hidden" value="{{$applied->job_id}}" name="job_id">
+                                                    <button type="submit" class="btn btn-danger mx-4"> 
+                                                        <i class="fa-solid fa-xmark"></i>  Not Selected
+                                                    </button>
+                                            </form></li>
                                             @endif
-                                            <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fas fa-laptop-code"></i> Interview</a></li>
+                                            <li><form action="{{route('applicant.selected')}}" method="POST">
+                                                @csrf
+                                                    <input type="hidden" value="{{$applied->user_id}}" name="user_id">
+                                                    <input type="hidden" value="{{$applied->job_id}}" name="job_id">
+                                                    <button type="submit" class="btn btn-success mx-4"> 
+                                                        <i class="fa-solid fa-xmark"></i>   Selected
+                                                    </button>
+                                            </form></li>
                                         </ul>
                                     </div>
                                 </td>

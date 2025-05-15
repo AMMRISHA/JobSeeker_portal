@@ -92,8 +92,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('edit-job', [ApplicationController::class, 'editJob'])->name('update.job');
     Route::post('applicant-not-selected' ,[ApplicationController::class, 'applicantRejected'])->name('applicant.not.selected');
     Route::get('not-selected-application' , [ApplicationController::class, 'notSelectedApplication'])->name('not.selected.application');
+    Route::get('selected-application' , [ApplicationController::class, 'selectedApplication'])->name('selected.application');
     Route::post('applicant-selected-for-interview', [ApplicationController::class, 'selectedForInterview'])->name('applicant.selected.interview');
     Route::get('applicant-interview',[ApplicationController::class,'showAllInterview'])->name('applicant.interview');
+    Route::post('applicant-selected',[ApplicationController::class,'ApplicantSelected'])->name('applicant.selected');
+    Route::get('announcement',[ApplicationController::class,'announcement'])->name('announcement');
+    Route::post('/announcement/store', [ApplicationController::class, 'announceStore'])->name('announcement.store');
+
       });
 
 

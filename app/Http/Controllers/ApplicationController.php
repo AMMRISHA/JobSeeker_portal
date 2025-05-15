@@ -13,8 +13,10 @@ use App\Models\City ;
 use App\Models\Country ;
 use App\Models\State ;
 use App\Models\AppliedJob;
+use App\Models\Announcements;
 use App\Notifications\ApplicationRejectedNotification;
 use App\Notifications\ApplicationInterviewNotification;
+use App\Notifications\ApplicationSelectedNotification;
 
 
 class ApplicationController extends Controller{
@@ -250,6 +252,22 @@ public function notSelectedApplication(){
     ]);
 }
 
+public function selectedApplication(){
+
+ $selected_application_details= DB::table('applied_jobs')
+    ->where('applied_jobs.application_status', 'selected')
+    ->join('jobs', 'applied_jobs.job_id', '=', 'jobs.job_id')
+    ->join('users', 'applied_jobs.user_id', '=', 'users.id')
+    ->select(
+        'applied_jobs.*','jobs.*' , 'users.*'
+    )
+    ->get();
+    return view('selected_application_details',[
+       'selected_application_details'=>$selected_application_details , 
+    ]);
+}
+
+
 
 public function selectedForInterview(Request $request){
     
@@ -279,9 +297,55 @@ public function showAllInterview(){
         'applied_jobs.*','jobs.*' , 'users.*'
     )
     ->get();
-
+// dd($interview_details);
     return view('all_interview_applicants',[
         'interview_details' => $interview_details
     ]);
+}
+
+public function ApplicantSelected(Request $request){
+       
+$applicant_details = AppliedJob::where('user_id', $request->user_id)
+                               ->where('job_id', $request->job_id)
+                               ->first();
+$job_title = JobDetails::where('job_id' , $request->job_id)->pluck('title')->first();
+// dd($job_title);
+if ($applicant_details) {
+    $applicant_details->application_status = 'selected';
+    $applicant_details->save();
+     $user = User::find($request->user_id);
+        if ($user) {
+            $user->notify(new ApplicationSelectedNotification($job_title)); // Pass job title
+        } 
+
+}
+        
+return redirect()->back()->with('success' , 'Application Selected');
+
+}
+
+public function announcement(){
+    $logged_in_user = Auth::User();
+    return view('announcement',[
+        'logged_in_user' => $logged_in_user
+    ]);
+}
+
+public function announceStore(Request $request){
+
+    if($request->user_id)
+    {
+        Announcements::create([
+            'added_by' => $request->user_id,
+            'created_at'=> now() ,
+            'annoncement_heading'=>$request->title ,
+           'announcement_desc'=>$request->message ,
+        ]);
+    }
+
+           
+return redirect()->back()->with('success' , 'Announcement sent successfully');
+
+
 }
 }
