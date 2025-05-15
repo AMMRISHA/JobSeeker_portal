@@ -269,4 +269,19 @@ if ($applicant_details) {
 
 return redirect()->back()->with('success' , 'Application Scheduled For Interview');
 }
+
+public function showAllInterview(){
+    $interview_details = DB::table('applied_jobs')
+    ->where('applied_jobs.application_status', 'interview')
+    ->join('jobs', 'applied_jobs.job_id', '=', 'jobs.job_id')
+    ->join('users', 'applied_jobs.user_id', '=', 'users.id')
+    ->select(
+        'applied_jobs.*','jobs.*' , 'users.*'
+    )
+    ->get();
+
+    return view('all_interview_applicants',[
+        'interview_details' => $interview_details
+    ]);
+}
 }

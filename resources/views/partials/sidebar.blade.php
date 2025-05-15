@@ -19,7 +19,7 @@
                 <a class="nav-link text-white" href="#"><i class="fa-solid fa-file-import mr-2"></i>Import</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#"><i class="fa-solid fa-clipboard-list mr-2"></i>Interview</a>
+                <a class="nav-link text-white" href="{{route('applicant.interview')}}"><i class="fa-solid fa-clipboard-list mr-2"></i>Interview</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{route('not.selected.application')}}"><i class="fa-solid fa-user mr-2"></i>Not Selected</a>

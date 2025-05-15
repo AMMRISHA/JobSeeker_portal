@@ -93,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('applicant-not-selected' ,[ApplicationController::class, 'applicantRejected'])->name('applicant.not.selected');
     Route::get('not-selected-application' , [ApplicationController::class, 'notSelectedApplication'])->name('not.selected.application');
     Route::post('applicant-selected-for-interview', [ApplicationController::class, 'selectedForInterview'])->name('applicant.selected.interview');
+    Route::get('applicant-interview',[ApplicationController::class,'showAllInterview'])->name('applicant.interview');
       });
 
 
