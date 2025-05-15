@@ -14,8 +14,9 @@
                 @foreach($added_jobs as $job)
                 <div class="col-sm-8 col-md-4 bg-primary m-4 text-center text-white">
                     <h4 class="text-white">Job Id: {{$job->job_id}}</h4>
-                    <h5>Applicants: </h5>
-                    <a href="{{route('application',['job_id' => $job->job_id])}}"> <button class="btn btn-primary"> View All <i class="fa-solid fa-right-from-bracket"></i></button> </a>
+                    <h5  class="text-white">{{$job->title}}</h5>
+                    <h5  class="text-white">Applicants: {{ $applicantCounts[$job->job_id]->total_applicants ?? 0 }}</h5>
+                    <h5><a href="{{route('application',['job_id' => $job->job_id])}}"> <button class="btn btn-primary"> View All <i class="fa-solid fa-right-from-bracket"></i></button> </a></h5>
 
                 </div>
                 @endforeach

@@ -48,8 +48,7 @@
                 @if(Auth::check() )
                     @if(Auth::user()->is_applicant == 1)
                     <a href="{{route('apply' , ['job_id' => $job_details->job_id])}}"><button class="btn btn-primary">Apply</button></a>
-                    @else
-                        <a href="#"><button class="btn btn-primary">Edit</button></a>
+                  
                 
                     @endif
                 @else

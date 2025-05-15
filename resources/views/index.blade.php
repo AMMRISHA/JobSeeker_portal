@@ -34,7 +34,7 @@
                                 <div class="form-group">
                                   <div class="form-field">
                                     <div class="icon"><span class="icon-briefcase"></span></div>
-                                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="eg. Garphic. Web Developer">
+                                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="eg. Graphic. Web Developer">
                                   </div>
                                 </div>
                               </div>

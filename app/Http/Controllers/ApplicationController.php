@@ -19,13 +19,26 @@ class ApplicationController extends Controller{
 
     public function viewAllJobCategory(){
         $user = Auth::User();
-        $added_jods = JobDetails::where('company_hr' , $user->id )->get();
-        
-        if(! $added_jods){
+        $added_jobs = JobDetails::where('company_hr' , $user->id )->get();
+    
+        if(! $added_jobs){
             return redirect()->back()->with('error', 'Something went wrong !');
         }
+ 
+    $jobIds = $added_jobs->pluck('job_id');
+// dd($jobIds);
+ 
+    $applicantCounts = DB::table('applied_jobs')
+        ->whereIn('job_id', $jobIds)
+        ->select('job_id', DB::raw('count(*) as total_applicants'))
+        ->groupBy('job_id')
+        ->get()
+        ->keyBy('job_id'); 
+// dd($applicantCounts);
+        
         return view('showJobAllCategory',[
-            'added_jobs'=>$added_jods ,
+            'added_jobs'=>$added_jobs ,
+            'applicantCounts' => $applicantCounts,
         ]);
     }
 public function viewAllApplication($job_id)
@@ -36,7 +49,7 @@ public function viewAllApplication($job_id)
         return redirect()->route('login-form')->with('error', 'Please log in to access applicants.');
     }
 
-    // Fetch the job with its key skills
+
     $job = DB::table('jobs')->where('job_id', $job_id)->where('company_hr', $user->id)->first();
     if (!$job) {
         return redirect()->back()->with('error', 'Job not found or unauthorized.');
