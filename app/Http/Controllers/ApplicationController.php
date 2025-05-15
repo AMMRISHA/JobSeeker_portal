@@ -14,6 +14,7 @@ use App\Models\Country ;
 use App\Models\State ;
 use App\Models\AppliedJob;
 use App\Notifications\ApplicationRejectedNotification;
+use App\Notifications\ApplicationInterviewNotification;
 
 
 class ApplicationController extends Controller{
@@ -249,4 +250,23 @@ public function notSelectedApplication(){
     ]);
 }
 
+
+public function selectedForInterview(Request $request){
+    
+$applicant_details = AppliedJob::where('user_id', $request->user_id)
+                               ->where('job_id', $request->job_id)
+                               ->first();
+$job_title = JobDetails::where('job_id' , $request->job_id)->pluck('title')->first();
+// dd($job_title);
+if ($applicant_details) {
+    $applicant_details->application_status = 'interview';
+    $applicant_details->save();
+     $user = User::find($request->user_id);
+        if ($user) {
+            $user->notify(new ApplicationInterviewNotification($job_title)); // Pass job title
+        }
+}
+
+return redirect()->back()->with('success' , 'Application Scheduled For Interview');
+}
 }

@@ -197,7 +197,11 @@
                                                         <i class="fa-solid fa-xmark"></i>  Not Interested
                                                     </button>
                                             </form>
-                                            <form action="">
+                                            <form action="{{route('applicant.selected.interview')}}"method="POST">
+                                                @csrf
+                                                <input type="hidden" value="{{$applicant_details->user_id}}" name="user_id">
+                                                <input type="hidden" value="{{$applicant_details->job_id}}" name="job_id">
+                                                    
                                                 <button class="btn btn-success"> <i class="fas fa-laptop-code"></i> Interview </button>
                                             </form>
                                         </div>
