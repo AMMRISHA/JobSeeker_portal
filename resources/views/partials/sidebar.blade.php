@@ -22,7 +22,7 @@
                 <a class="nav-link text-white" href="#"><i class="fa-solid fa-clipboard-list mr-2"></i>Interview</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#"><i class="fa-solid fa-user mr-2"></i>Not Selected</a>
+                <a class="nav-link text-white" href="{{route('not.selected.application')}}"><i class="fa-solid fa-user mr-2"></i>Not Selected</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="#"><i class="fa-solid fa-handshake mr-2"></i>Selected</a>

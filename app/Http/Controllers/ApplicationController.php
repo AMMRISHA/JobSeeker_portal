@@ -12,6 +12,8 @@ use App\Models\JobCategory ;
 use App\Models\City ;
 use App\Models\Country ;
 use App\Models\State ;
+use App\Models\AppliedJob;
+use App\Notifications\ApplicationRejectedNotification;
 
 
 class ApplicationController extends Controller{
@@ -91,37 +93,51 @@ public function viewAllApplication($job_id)
 }
 
 
-    public function viewApplicantProfile($user_id){
+    public function viewApplicantProfile($user_id , $job_id){
         $user_details = User::where('id' , $user_id)->first();
         
-        $applicant_details = Applicant::where('user_id', $user_id)->first();
-     
-        return view('company.applicantprofile',[
-            'user_details' => $user_details ,
-            'applicant_details'=> $applicant_details
+$applicant_details = DB::table('applicant_details')
+    ->join('applied_jobs', function ($join) use ($user_id, $job_id) {
+        $join->on('applicant_details.user_id', '=', 'applied_jobs.user_id')
+             ->where('applied_jobs.user_id', '=', $user_id)
+             ->where('applied_jobs.job_id', '=', $job_id);
+    })
+    ->join('users', function ($join) use ($user_id) {
+        $join->on('users.id', '=', 'applied_jobs.user_id')
+             ->where('users.id', '=', $user_id);
+    })
+    ->select('users.*', 'applicant_details.*', 'applied_jobs.*') // Optional: you can narrow fields
+    ->first();
+
+        // dd($applicant_details);
+                return view('company.applicantprofile',[
+                    'user_details' => $user_details ,
+                    'applicant_details'=> $applicant_details
+                ]);
+    }
+
+        
+    public function viewAllJobs(){
+        $logged_in_user = Auth::user();
+        $country_details = Country::get();
+        $city_details = City::get();
+        $state_details = State::get();
+        if (!$logged_in_user) {
+            return redirect()->route('login-form')->with('error', 'Please log in to access your jobs.');
+        }
+
+        $job_details = JobDetails::where('company_hr', $logged_in_user->id)->get();
+        $job_category = JobCategory::all();
+
+        return view('all_jobs', [
+            'job_details' => $job_details ,
+            'job_category'=> $job_category ,
+            'country_details' => $country_details ,
+            'city_details' =>$city_details ,
+            'state_details' => $state_details
+
         ]);
     }
-public function viewAllJobs(){
-    $logged_in_user = Auth::user();
-    $country_details = Country::get();
-    $city_details = City::get();
-    $state_details = State::get();
-    if (!$logged_in_user) {
-        return redirect()->route('login-form')->with('error', 'Please log in to access your jobs.');
-    }
-
-    $job_details = JobDetails::where('company_hr', $logged_in_user->id)->get();
-    $job_category = JobCategory::all();
-
-    return view('all_jobs', [
-        'job_details' => $job_details ,
-        'job_category'=> $job_category ,
-        'country_details' => $country_details ,
-        'city_details' =>$city_details ,
-        'state_details' => $state_details
-
-    ]);
-}
 
 
 
@@ -205,5 +221,32 @@ public function getStates($country_id)
 }
 
 
+public function applicantRejected(Request $request)
+{
+$applicant_details = AppliedJob::where('user_id', $request->user_id)
+                               ->where('job_id', $request->job_id)
+                               ->first();
+
+if ($applicant_details) {
+    $applicant_details->application_status = 'rejected';
+    $applicant_details->save();
+     $user = User::find($request->user_id);
+        if ($user) {
+            $user->notify(new ApplicationRejectedNotification($applicant_details->job_title ?? 'Job')); // Pass job title
+        }
+}
+
+return redirect()->back()->with('success' , 'Application rejected');
+
+}
+
+
+public function notSelectedApplication(){
+    $not_selected_application_details = AppliedJob::where('application_status', 'rejected')->get();
+
+    return view('not_selected_application_details',[
+       'not_selected_application_details'=>$not_selected_application_details , 
+    ]);
+}
 
 }

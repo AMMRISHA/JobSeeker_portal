@@ -1,8 +1,21 @@
 @extends('layouts.base')
 
-@section('title', 'Dashboard')
+@section('title', 'Applicant Profile')
 
 @section('content')
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 
                      
 <div class="container-fluid my-5">
@@ -14,7 +27,7 @@
             </div>
              <div class="col-md-4 d-flex justify-content-end">
                <button type="cancel" name="back" class="btn btn-primary btn-sm " value="Back"
-                                                        onclick="document.location ='{{ route('all.applied.jobs') }}'" title="Back">
+                                                        onclick="document.location ='{{ route('dashboard') }}'" title="Back">
                                                         <i class="fa fa-reply" aria-hidden="true"></i> 
                 </button>
              </div>
@@ -24,42 +37,31 @@
                     <thead class="thead-dark text-center">
                         <tr>
                             <th scope="col">Job ID</th>
-                             <th scope="col">User ID</th>                            
-                            <th scope="col">Applicant Details</th>
+                            <th scope="col">Applicant Id ID</th>  
+                             <th scope="col">User ID</th> 
+                             <th scope="col">Applied On</th> 
                              <th scope="col">Applicant Skills</th>
-                            <th scope="col">Company Name</th>
-                            <th scope="col">Job Details</th>
-                             <th scope="col">Application Status</th>
-                            <th scope="col">Applied On</th>
+                            <th scope="col">Applicant Description</th>
+                            <th scope="col">Application_status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody class="py-5">
                       
-                        @forelse($applied_job_application as $applied)
+                        @forelse($not_selected_application_details as $applied)
                             <tr>
                                 <td>{{ $applied->job_id ? $applied->job_id  : ''}}</td>
-                                <td>{{$applied->id ? $applied->id : ''}}</td>
-                                <td>
-                                    {{  $applied->name  ? $applied->name : '' }}<br>
-                                    {{ $applied->email  ? $applied->email : ''}}<br>
-                                    {{ $applied->mobile  ? $applied->mobile : '' }}
-                                </td>
-                                <td>
-                                    {{$applied->skills}}
-                                </td>
-                                <td>{{ $applied->company_name  ? $applied->company_name : '' }}</td>
-                                <td>
-                                    {{ $applied->title }}, {{ get_category_name_by_id($applied->category) }}<br><br>
-                                    <strong>Key Skills:</strong> {{ $applied->key_skills }}<br><br>
-                                    <strong>Description:</strong> {{ $applied->description }}<br><br>
-                                    <strong>Location:</strong> {{ get_country_name($applied->country) }}, {{ get_city_name($applied->city) }}
-                                </td>
+                                <td>{{$applied->applicant_id ? $applied->applicant_id : ''}}</td>
+                                <td>{{  $applied->user_id  ? $applied->user_id : '' }} </td>
+                               <td>{{ \Carbon\Carbon::parse($applied->applied_at)->format('d M Y') }}</td>
+                              
+                                <td> {{ $applied->skills  ? $applied->skills : ''}} </td>
+                                <td>{{ $applied->desc_yourself  ? $applied->desc_yourself : '' }} </td>
                                 <td>
                                     {{$applied->application_status}}
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($applied->applied_at)->format('d M Y') }}</td>
-                                <td>
+                                
+                                  <td>
                                     <div class="dropdown">
                                         <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa-solid fa-ellipsis-vertical"></i> <!-- Three dots icon -->
@@ -67,9 +69,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <li><a class="dropdown-item" href="{{ route('applicant_profile', ['user_id' => $applied->user_id , 'job_id'=> $applied->job_id]) }}"><i class="fa-solid fa-eye"></i> Profile</a></li>
                                             <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-eye"></i> Job Details</a></li>
-                                            @if($applied->application_status != 'rejected')
                                             <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fa-solid fa-xmark"></i>  Not Interested</a></li>
-                                            @endif
                                             <li><a class="dropdown-item" href="{{ route('job', ['job_id' => $applied->job_id]) }}"><i class="fas fa-laptop-code"></i> Interview</a></li>
                                         </ul>
                                     </div>
@@ -78,7 +78,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">No Jobs Found</td>
+                                <td colspan="6" class="text-center">No Applicants Found</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -88,4 +88,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

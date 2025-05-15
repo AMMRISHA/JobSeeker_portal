@@ -85,11 +85,13 @@ Route::post('/email/verification-notification', [VerificationController::class, 
 // Application at hr side
 Route::middleware(['auth'])->group(function () {
     Route::get('application/{job_id}', [ApplicationController::class, 'viewAllApplication'])->name('application');
-    Route::get('applicant_profile/{user_id}', [ApplicationController::class, 'viewApplicantProfile'])->name('applicant_profile');
+    Route::get('applicant_profile/{user_id}/{job_id}', [ApplicationController::class, 'viewApplicantProfile'])->name('applicant_profile');
     Route::get('all.applied.jobs' ,[ApplicationController::class , 'viewAllJobCategory'])->name('all.applied.jobs');
     Route::get('all-jobs', [ApplicationController::class, 'viewAllJobs'])->name('all.jobs');
     Route::post('store-job', [ApplicationController::class, 'storeJob'])->name('store.job');
     Route::post('edit-job', [ApplicationController::class, 'editJob'])->name('update.job');
+    Route::post('applicant-not-selected' ,[ApplicationController::class, 'applicantRejected'])->name('applicant.not.selected');
+    Route::get('not.selected.application' , [ApplicationController::class, 'notSelectedApplication'])->name('not.selected.application');
       });
 
 

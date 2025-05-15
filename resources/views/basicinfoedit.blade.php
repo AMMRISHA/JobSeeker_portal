@@ -42,7 +42,7 @@
                     <div class="my-5 card-body">
                             
                                
-                           <form action="{{route('update.job.info')}}" method ="post" enctype="multipart/form-data">
+                           <form action="{{route('update.basic.info')}}" method ="post" enctype="multipart/form-data">
 
                             @csrf
 
